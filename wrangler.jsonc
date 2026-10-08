@@ -11,14 +11,14 @@
   },
 
   "kv_namespaces": [
-    {
-      "binding": "HYDRO-CHARTDATA",
-      "id": "0b77f02fdc4e48f180b35b7532f1143b"
-    },
-    {
-      "binding": "RADAR_KV",
-      "id": "0b77f02fdc4e48f180b35b7532f1143b"
-    }
+  {
+    "binding": "HYDRO",
+    "id": "f188888a433e4e3db05039c7d55c3ed4"
+  },
+  {
+    "binding": "RADAR",
+    "id": "0727465be0994a628eebbd2a002c428a"
+  }
   ],
 
   "observability": {
