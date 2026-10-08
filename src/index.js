@@ -309,7 +309,7 @@ async function collecteRadar(env) {
     );
 
   let historique =
-    await env.RADAR_KV.get(
+    await env.RADAR.get(
       "radar_history",
       "json"
     );
@@ -350,7 +350,7 @@ async function collecteRadar(env) {
       )
       .slice(-4320);
 
-  await env.RADAR_KV.put(
+  await env.RADAR.put(
     "radar_history",
     JSON.stringify(
       historique
@@ -772,7 +772,7 @@ async function collectePrevisionsAROME(env) {
   // 9. STOCKAGE
   // --------------------------------------------------
 
-  await env.RADAR_KV.put(
+  await env.RADAR.put(
     "forecast_rain",
     JSON.stringify({
 
@@ -1067,7 +1067,7 @@ async function collectePrevisionsARPEGE(env) {
   // --------------------------------------------------
 
   const ancien =
-    await env.RADAR_KV.get(
+    await env.RADAR.get(
       "forecast_rain",
       "json"
     );
@@ -1088,7 +1088,7 @@ console.log(
   "ARPEGE POINTS :",
   JSON.stringify(points)
 );
-  await env.RADAR_KV.put(
+  await env.RADAR.put(
     "forecast_rain",
     JSON.stringify(
       previsions
@@ -1854,7 +1854,7 @@ async function collecteEtStockage(env) {
   // --------------------------------------------------
 
   await env[
-    "HYDRO-CHARTDATA"
+    "HYDRO"
   ].put(
     cle,
     JSON.stringify(
@@ -1869,7 +1869,7 @@ async function collecteEtStockage(env) {
 
   let historiqueDebit =
     await env[
-      "HYDRO-CHARTDATA"
+      "HYDRO"
     ].get(
       "debit_history",
       "json"
@@ -1947,7 +1947,7 @@ async function collecteEtStockage(env) {
 
 
   await env[
-    "HYDRO-CHARTDATA"
+    "HYDRO"
   ].put(
     "debit_history",
     JSON.stringify(
@@ -1962,7 +1962,7 @@ async function collecteEtStockage(env) {
 
   let historiqueSaintFargeau =
     await env[
-      "HYDRO-CHARTDATA"
+      "HYDRO"
     ].get(
       "saint_fargeau_history",
       "json"
@@ -2032,7 +2032,7 @@ async function collecteEtStockage(env) {
 
 
   await env[
-    "HYDRO-CHARTDATA"
+    "HYDRO"
   ].put(
     "saint_fargeau_history",
     JSON.stringify(
@@ -2117,7 +2117,7 @@ async function afficherPage(
 
   const liste =
     await env[
-      "HYDRO-CHARTDATA"
+      "HYDRO"
     ].list({
       prefix:
         "debit_"
@@ -2159,7 +2159,7 @@ async function afficherPage(
 
   const texte =
     await env[
-      "HYDRO-CHARTDATA"
+      "HYDRO"
     ].get(
       derniereCle
     );
@@ -2183,7 +2183,7 @@ async function afficherPage(
   // --------------------------------------------------
 
   const historiqueRadar =
-    await env.RADAR_KV.get(
+    await env.RADAR.get(
       "radar_history",
       "json"
     );
@@ -2242,7 +2242,7 @@ async function afficherPage(
 
   const historiqueDebit =
     await env[
-      "HYDRO-CHARTDATA"
+      "HYDRO"
     ].get(
       "debit_history",
       "json"
@@ -2263,7 +2263,7 @@ async function afficherPage(
 
 const historiqueSaintFargeau =
   await env[
-    "HYDRO-CHARTDATA"
+    "HYDRO"
   ].get(
     "saint_fargeau_history",
     "json"
@@ -2344,7 +2344,7 @@ if (
   // --------------------------------------------------
 
   const previsions =
-    await env.RADAR_KV.get(
+    await env.RADAR.get(
       "forecast_rain",
       "json"
     );
