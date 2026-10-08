@@ -1,0 +1,37 @@
+{
+  "name": "meteo",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-15",
+
+  "triggers": {
+    "crons": [
+      "*/10 * * * *",
+      "0 * * * *"
+    ]
+  },
+
+  "kv_namespaces": [
+    {
+      "binding": "HYDRO-CHARTDATA",
+      "id": "0b77f02fdc4e48f180b35b7532f1143b"
+    },
+    {
+      "binding": "RADAR_KV",
+      "id": "0b77f02fdc4e48f180b35b7532f1143b"
+    }
+  ],
+
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": false,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  }
+}
