@@ -1388,7 +1388,7 @@ async function getDebit(station) {
   const response = await fetch(url, {
     headers: {
       "Accept": "application/json",
-      "User-Agent": "Mozilla/5.0 (compatible; MeteoHydroChartrettes/1.0)"
+      "User-Agent": "Mozilla/5.0 (compatible; MeteoHydroTurraque/1.0)"
     }
   });
 
@@ -1915,7 +1915,7 @@ function pageVide() {
       content="width=device-width, initial-scale=1.0">
 
 <title>
-Météo hydro Chartrettes
+Météo hydro Turraque
 </title>
 
 <style>
@@ -1967,7 +1967,7 @@ body {
 <div class="card">
 
 <h1>
-Météo hydro Chartrettes
+Météo hydro Turraque
 </h1>
 
 <p>
@@ -2274,18 +2274,18 @@ const pointsTrieSurBaise =
 
 
     // --------------------------------------------------
-    // COURBE SAINT-FARGEAU
+    // COURBE SAINT-JEAN-POUTGE
     // --------------------------------------------------
 
-    let pointsSaintFargeau = "";
+    let pointsSaintJeanPoutge = "";
 
 
     if (
-      valeursSaintFargeau.length >= 2
+      valeursSaintJeanPoutge.length >= 2
     ) {
 
-      pointsSaintFargeau =
-        saintFargeauGraph
+      pointsSaintJeanPoutge =
+        saintsaintJeanPoutgeGraph
           .map(
             (p, i) => {
 
@@ -2366,23 +2366,23 @@ ${maxDebit.toFixed(0)}
 </text>
 
 
-<!-- COURBE CHARTRETTES -->
+<!-- COURBE Trie sur Baïse -->
 
 <polyline
-  points="${pointsChartrettes}"
+  points="${pointsTrieSurBaise}"
   fill="none"
   stroke="#1976d2"
   stroke-width="2"
 />
 
 
-<!-- COURBE SAINT-FARGEAU -->
+<!-- COURBE SAINT-JEAN-POUTGE -->
 
 ${
-  pointsSaintFargeau
+  pointsSaintJeanPoutge
     ? `
 <polyline
-  points="${pointsSaintFargeau}"
+  points="${pointsSaintJeanPoutge}"
   fill="none"
   stroke="#e67e22"
   stroke-width="2"
@@ -2421,7 +2421,7 @@ ${
 />
 
 
-<!-- POINT CHARTRETTES -->
+<!-- POINT TRIE SUR BAISE -->
 
 <circle
   id="debitPoint"
@@ -2434,7 +2434,7 @@ ${
 />
 
 <circle
-  id="debitPointSaintFargeau"
+  id="debitPointSaintJeanPoutge"
   cx="0"
   cy="0"
   r="4"
@@ -2737,7 +2737,7 @@ Prévisions de précipitations indisponibles
       content="300">
 
 <title>
-Meteo hydro Chartrettes
+Meteo hydro Turraque
 </title>
 
 
@@ -3110,7 +3110,7 @@ td {
 <div class="header">
 
 <h1>
-Meteo hydro Chartrettes
+Meteo hydro Turraque
 </h1>
 
 <div style="
@@ -3432,7 +3432,7 @@ ${graph}
   font-size="11"
   fill="#555"
 >
-Chartrettes
+Trie sur Baïse
 </text>
 
 <line
@@ -3450,7 +3450,7 @@ Chartrettes
   font-size="11"
   fill="#555"
 >
-Saint-Fargeau-Ponthierry
+Saint-Jean-Poutge
 </text>
 
 </svg>
@@ -3644,7 +3644,7 @@ const pointSaintJeanPoutge =
 
 
     // ------------------------------------------------
-    // POINT CHARTRETTES
+    // POINT TRIE SUR BAISE
     // ------------------------------------------------
 
     const y =
@@ -3956,7 +3956,7 @@ tooltip.innerHTML =
       "hidden"
     );
 
-    pointSaintFargeau.setAttribute(
+    pointSaintJeanPoutge.setAttribute(
       "visibility",
       "hidden"
     );
