@@ -1992,27 +1992,13 @@ Aucune mesure enregistrée.
 function pageAvecMesure(
   mesure,
   radar,
-  debitGraph,
-  saintFargeauGraph,
+  trieSurBaiseGraph,
+  saintJeanPoutgeGraph,
   previsions,
   periode = "tout"
 ) {
 
-  const montereau =
-    mesure.montereau || {};
-
-  const episy =
-    mesure.episy || {};
-
-  const total =
-    Number(
-      mesure.total || 0
-    );
-
-
-
-
-
+ 
   // --------------------------------------------------
   // DÉCALAGE VIGICRUES
   // --------------------------------------------------
@@ -2116,16 +2102,16 @@ function pageAvecMesure(
 
  
 
-// ==================================================
-// GRAPHE DEBIT — CHARTRETTES + SAINT-FARGEAU
+/ ==================================================
+// GRAPHE DEBIT — TRIE-SUR-BAÏSE + SAINT-JEAN-POUTGE
 // ==================================================
 
 const graph =
   (() => {
 
     if (
-      !Array.isArray(debitGraph) ||
-      debitGraph.length < 2
+      !Array.isArray(trieSurBaiseGraph) ||
+      trieSurBaiseGraph.length < 2
     ) {
 
       return `
@@ -2161,14 +2147,14 @@ Données insuffisantes
       margeHaut -
       margeBas;
     const tempsDebut =
-      new Date(
-        debitGraph[0].t
-      ).getTime();
+    new Date(
+      trieSurBaiseGraph[0].t
+    ).getTime();
 
     const tempsFin =
       new Date(
-        debitGraph[
-          debitGraph.length - 1
+        trieSurBaiseGraph[
+          trieSurBaiseGraph.length - 1
         ].t
       ).getTime();
 
@@ -2196,39 +2182,39 @@ Données insuffisantes
 
     }
 
-    // --------------------------------------------------
-    // DONNEES CHARTRETTES
-    // --------------------------------------------------
+  // --------------------------------------------------
+  // DONNEES TRIE-SUR-BAÏSE
+  // --------------------------------------------------
+  
+  const valeursTrieSurBaise =
+    trieSurBaiseGraph.map(
+      p =>
+        Number(p.debit)
+    );
+// --------------------------------------------------
+// DONNEES SAINT-JEAN-POUTGE
+// --------------------------------------------------
 
-    const valeursChartrettes =
-      debitGraph.map(
+const valeursSaintJeanPoutge =
+  Array.isArray(saintJeanPoutgeGraph)
+    ? saintJeanPoutgeGraph.map(
         p =>
           Number(p.debit)
-      );
+      )
+    : [];
 
 
-    // --------------------------------------------------
-    // DONNEES SAINT-FARGEAU
-    // --------------------------------------------------
+// --------------------------------------------------
+// ECHELLE COMMUNE
+// --------------------------------------------------
 
-    const valeursSaintFargeau =
-      Array.isArray(saintFargeauGraph)
-        ? saintFargeauGraph.map(
-            p =>
-              Number(p.debit)
-          )
-        : [];
+const toutesLesValeurs =
+  [
+    ...valeursTrieSurBaise,
+    ...valeursSaintJeanPoutge
+  ];
 
 
-    // --------------------------------------------------
-    // ECHELLE COMMUNE
-    // --------------------------------------------------
-
-    const toutesLesValeurs =
-      [
-        ...valeursChartrettes,
-        ...valeursSaintFargeau
-      ];
 
 
     const minDebit =
@@ -2251,14 +2237,14 @@ Données insuffisantes
       );
 
 
-    // --------------------------------------------------
-    // COURBE CHARTRETTES
-    // --------------------------------------------------
+// --------------------------------------------------
+// COURBE TRIE-SUR-BAÏSE
+// --------------------------------------------------
 
-    const pointsChartrettes =
-      debitGraph
-        .map(
-          (p, i) => {
+const pointsTrieSurBaise =
+  trieSurBaiseGraph
+    .map(
+      (p, i) => {
 
             const x = 
               positionX(p.t);
@@ -2468,7 +2454,7 @@ ${
   fill="#666"
 >
 ${new Date(
-  debitGraph[0].t
+  trieSurBaiseGraph[0].t
 ).toLocaleDateString(
   "fr-FR"
 )}
@@ -2483,8 +2469,8 @@ ${new Date(
   fill="#666"
 >
 ${new Date(
-  debitGraph[
-    debitGraph.length - 1
+  trieSurBaiseGraph[
+    trieSurBaiseGraph.length - 1
   ].t
 ).toLocaleDateString(
   "fr-FR"
@@ -3521,15 +3507,15 @@ Saint-Fargeau-Ponthierry
 
 <script>
 (() => {
-  const data =
-    ${JSON.stringify(
-      debitGraph
-    )};
+ const dataTrieSurBaise =
+  ${JSON.stringify(
+    trieSurBaiseGraph
+  )};
 
-  const dataSaintFargeau =
-    ${JSON.stringify(
-      saintFargeauGraph
-    )};
+const dataSaintJeanPoutge =
+  ${JSON.stringify(
+    saintJeanPoutgeGraph
+  )};
 
 
   const svg =
@@ -3547,10 +3533,10 @@ Saint-Fargeau-Ponthierry
       "debitPoint"
     );
 
-  const pointSaintFargeau =
-    document.getElementById(
-      "debitPointSaintFargeau"
-    );
+const pointSaintJeanPoutge =
+  document.getElementById(
+    "debitPointSaintJeanPoutge"
+  );
 
   const guide =
     document.getElementById(
@@ -3595,10 +3581,11 @@ Saint-Fargeau-Ponthierry
   // --------------------------------------------------
   // MIN / MAX DES DEUX COURBES
   // --------------------------------------------------
-
+  
   const valeurs = [
     ...data,
-    ...dataSaintFargeau
+    ...dataSaintJeanPoutge
+  ];
   ]
     .map(
       p =>
@@ -3686,20 +3673,20 @@ Saint-Fargeau-Ponthierry
     );
 
 
-    // ------------------------------------------------
-    // POINT SAINT-FARGEAU
-    // ------------------------------------------------
-
-    const pSF =
-      dataSaintFargeau.find(
-        q =>
-          q.t === p.t
-      );
+  // ------------------------------------------------
+  // POINT SAINT-JEAN-POUTGE
+  // ------------------------------------------------
+  
+  const pSJP =
+    dataSaintJeanPoutge.find(
+      q =>
+        q.t === p.t
+    );
 
 
     if (pSF) {
 
-      const ySF =
+      const ySJP =
         margeHaut +
         graphH -
         (
@@ -3714,24 +3701,24 @@ Saint-Fargeau-Ponthierry
         graphH;
 
 
-      pointSaintFargeau.setAttribute(
+     pointSaintJeanPoutge.setAttribute(
         "cx",
         x
       );
 
-      pointSaintFargeau.setAttribute(
+      pointSaintJeanPoutge.setAttribute(
         "cy",
-        ySF
+        ySJP
       );
 
-      pointSaintFargeau.setAttribute(
+      pointSaintJeanPoutge.setAttribute(
         "visibility",
         "visible"
       );
 
     } else {
 
-      pointSaintFargeau.setAttribute(
+      pointSaintJeanPoutge.setAttribute(
         "visibility",
         "hidden"
       );
@@ -3793,20 +3780,20 @@ Saint-Fargeau-Ponthierry
       );
 
 
-    // ------------------------------------------------
-    // INFOS
-    // ------------------------------------------------
+// ------------------------------------------------
+// INFOS
+// ------------------------------------------------
 
-    let texteSaintFargeau =
-      "—";
+let texteSaintJeanPoutge =
+  "—";
 
-    if (pSF) {
+if (pSJP) {
 
-      texteSaintFargeau =
-        Number(
-          pSF.debit
-        ).toFixed(1) +
-        " m³/s";
+  texteSaintJeanPoutge =
+    Number(
+      pSJP.debit
+    ).toFixed(1) +
+    " m³/s";
 
     }
 
@@ -3820,7 +3807,7 @@ tooltip.innerHTML =
   "●" +
   "</span> " +
 
-  "Chartrettes : " +
+"Trie-sur-Baïse : " +
   Number(
     p.debit
   ).toFixed(1) +
@@ -3830,8 +3817,8 @@ tooltip.innerHTML =
   "●" +
   "</span> " +
 
-  "Saint-Fargeau-Ponthierry : " +
-  texteSaintFargeau;
+"Saint-Jean-Poutge : " +
+  texteSaintJeanPoutge;
 
 
     // ------------------------------------------------
