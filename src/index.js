@@ -2249,7 +2249,7 @@ const pointsTrieSurBaise =
     ) {
 
       pointsSaintJeanPoutge =
-        saintsaintJeanPoutgeGraph
+        saintJeanPoutgeGraph
           .map(
             (p, i) => {
 
