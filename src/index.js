@@ -1510,107 +1510,57 @@ const saintJeanPoutge =
   );
 
 
-  // --------------------------------------------------
-  // HISTORIQUE DEBIT 30 JOURS
-  // --------------------------------------------------
+// ==================================================
+// HISTORIQUE DEBIT TRIE-SUR-BAISE
+// ==================================================
 
-  let historiqueDebit =
-    await env[
-      "HYDRO"
-    ].get(
-      "debit_history",
-      "json"
-    );
-
-
-  if (
-    !Array.isArray(
-      historiqueDebit
-    )
-  ) {
-
-    historiqueDebit = [];
-
-  }
-
-
-  const nouvelleMesure = {
-
-    t:
-      heure.toISOString(),
-
-    debit:
-      trieSurBaise.debit
-
-  };
-
-
-  const indexExistante =
-    historiqueDebit.findIndex(
-      m =>
-        m.t ===
-        nouvelleMesure.t
-    );
-
-
-  if (
-    indexExistante >= 0
-  ) {
-
-    historiqueDebit[
-      indexExistante
-    ] =
-      nouvelleMesure;
-
-  } else {
-
-    historiqueDebit.push(
-      nouvelleMesure
-    );
-
-  }
-
-
-  const limiteDebit =
-    heure.getTime() -
-    30 * 24 * 60 * 60 * 1000;
-
-
-  historiqueDebit =
-    historiqueDebit
-      .filter(
-        m =>
-          new Date(
-            m.t
-          ).getTime() >=
-          limiteDebit
-      )
-      .sort(
-        (a, b) =>
-          new Date(a.t).getTime() -
-          new Date(b.t).getTime()
-      )
-      .slice(-720);
-
-
-  await env[
-    "HYDRO"
-  ].put(
-    "debit_history",
-    JSON.stringify(
-      historiqueDebit
-    )
+let historiqueTrieSurBaise =
+  await env["HYDRO"].get(
+    "trie_sur_baise_history",
+    "json"
   );
 
+if (!Array.isArray(historiqueTrieSurBaise)) {
+  historiqueTrieSurBaise = [];
+}
 
-  // --------------------------------------------------
+const nouvelleMesureTrieSurBaise = {
+  t: heure.toISOString(),
+  debit: trieSurBaise.debit
+};
+
+const indexExistanteTrieSurBaise =
+  historiqueTrieSurBaise.findIndex(
+    m => m.t === nouvelleMesureTrieSurBaise.t
+  );
+
+if (indexExistanteTrieSurBaise >= 0) {
+  historiqueTrieSurBaise[indexExistanteTrieSurBaise] =
+    nouvelleMesureTrieSurBaise;
+} else {
+  historiqueTrieSurBaise.push(
+    nouvelleMesureTrieSurBaise
+  );
+}
+
+historiqueTrieSurBaise =
+  historiqueTrieSurBaise
+    .filter(m => new Date(m.t).getTime() >= limiteDebit)
+    .sort((a, b) => new Date(a.t).getTime() - new Date(b.t).getTime())
+    .slice(-720);
+
+await env["HYDRO"].put(
+  "trie_sur_baise_history",
+  JSON.stringify(historiqueTrieSurBaise)
+);
+
+
+// ==================================================
 // HISTORIQUE DEBIT SAINT-JEAN-POUTGE
-// --------------------------------------------------
+// ==================================================
 
 let historiqueSaintJeanPoutge =
-  await env[
-    "HYDRO"
-  ].get(
+  await env["HYDRO"].get(
     "saint_jean_poutge_history",
     "json"
   );
@@ -1640,20 +1590,11 @@ if (indexExistanteSaintJeanPoutge >= 0) {
 
 historiqueSaintJeanPoutge =
   historiqueSaintJeanPoutge
-    .filter(
-      m =>
-        new Date(m.t).getTime() >= limiteDebit
-    )
-    .sort(
-      (a, b) =>
-        new Date(a.t).getTime() -
-        new Date(b.t).getTime()
-    )
+    .filter(m => new Date(m.t).getTime() >= limiteDebit)
+    .sort((a, b) => new Date(a.t).getTime() - new Date(b.t).getTime())
     .slice(-720);
 
-await env[
-  "HYDRO"
-].put(
+await env["HYDRO"].put(
   "saint_jean_poutge_history",
   JSON.stringify(historiqueSaintJeanPoutge)
 );
