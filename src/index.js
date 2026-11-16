@@ -3090,156 +3090,50 @@ ${formatDate(
 </div>
 
 </div>
-
-
 <!-- ============================================== -->
-<!-- DEBIT -->
+<!-- DEBIT TRIE-SUR-BAÏSE -->
 <!-- ============================================== -->
 
 <div class="card debit-card">
 
 <h2>
-Débit Vigicrue
+Débit — Trie-sur-Baïse
 </h2>
 
+<div class="main-value">
+${formatDebit(mesure.trieSurBaise.debit)}
+m³/s
+</div>
 
-<div
-  style="
-    display:flex;
-    align-items:baseline;
-    gap:12px;
-  "
->
+<div class="station-date">
+Mesure :
+${formatDate(mesure.trieSurBaise.observation)}
+</div>
+
+</div>
+
+
+<!-- ============================================== -->
+<!-- DEBIT SAINT-JEAN-POUTGE -->
+<!-- ============================================== -->
+
+<div class="card debit-card">
+
+<h2>
+Débit — Saint-Jean-Poutge
+</h2>
 
 <div class="main-value">
-
-${formatDebit(total)}
+${formatDebit(mesure.saintJeanPoutge.debit)}
 m³/s
-
 </div>
-
-<div class="subtitle">
-
-Montereau + Épisy
-
-</div>
-
-</div>
-
-
-<table style="margin-top:10px">
-
-<tr>
-
-<th>
-Station
-</th>
-
-<th>
-Débit
-</th>
-
-<th>
-Surface
-</th>
-
-</tr>
-
-
-<tr>
-
-<td>
-
-Seine — Montereau
 
 <div class="station-date">
-
 Mesure :
-${formatDate(
-  montereau.observation
-)}
-
+${formatDate(mesure.saintJeanPoutge.observation)}
 </div>
 
-</td>
-
-<td>
-
-${formatDebit(
-  montereau.debit
-)}
-m³/s
-
-</td>
-
-<td>
-
-21 178 km²
-
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>
-
-Loing — Épisy
-
-<div class="station-date">
-
-Mesure :
-${formatDate(
-  episy.observation
-)}
-
 </div>
-
-</td>
-
-<td>
-
-${formatDebit(
-  episy.debit
-)}
-m³/s
-
-</td>
-
-<td>
-
-3 900 km²
-
-</td>
-
-</tr>
-
-
-<tr class="total">
-
-<td>
-TOTAL
-</td>
-
-<td>
-
-${formatDebit(total)}
-m³/s
-
-</td>
-
-<td></td>
-
-</tr>
-
-</table>
-
-
-
-
-</div>
-
 
 
 <!-- ============================================== -->
