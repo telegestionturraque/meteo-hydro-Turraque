@@ -640,7 +640,13 @@ async function collectePrevisionsAROME(env) {
 
   const resolution =
     image.getResolution();
-
+console.log("GEOTIFF DEBUG", {
+  width,
+  height: image.getHeight(),
+  origin,
+  resolution,
+  bbox: image.getBoundingBox()
+});
   const raster =
     await image.readRasters({
       interleave: true
