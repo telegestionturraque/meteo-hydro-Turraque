@@ -1540,7 +1540,7 @@ const saintJeanPoutge =
       heure.toISOString(),
 
     debit:
-      total
+      trieSurBaise.debit
 
   };
 
@@ -1604,90 +1604,59 @@ const saintJeanPoutge =
 
 
   // --------------------------------------------------
-  // HISTORIQUE DEBIT SAINT-FARGEAU-PONTHIERRY
-  // --------------------------------------------------
+// HISTORIQUE DEBIT SAINT-JEAN-POUTGE
+// --------------------------------------------------
 
-  let historiqueSaintFargeau =
-    await env[
-      "HYDRO"
-    ].get(
-      "saint_fargeau_history",
-      "json"
-    );
-
-
-  if (
-    !Array.isArray(
-      historiqueSaintFargeau
-    )
-  ) {
-
-    historiqueSaintFargeau = [];
-
-  }
-
-
-  const nouvelleMesureSaintFargeau = {
-    t:
-      heure.toISOString(),
-    debit:
-      saintFargeau.debit
-  };
-
-
-  const indexExistanteSaintFargeau =
-    historiqueSaintFargeau.findIndex(
-      m =>
-        m.t ===
-        nouvelleMesureSaintFargeau.t
-    );
-
-
-  if (
-    indexExistanteSaintFargeau >= 0
-  ) {
-
-    historiqueSaintFargeau[
-      indexExistanteSaintFargeau
-    ] =
-      nouvelleMesureSaintFargeau;
-
-  } else {
-
-    historiqueSaintFargeau.push(
-      nouvelleMesureSaintFargeau
-    );
-
-  }
-
-
-  historiqueSaintFargeau =
-    historiqueSaintFargeau
-      .filter(
-        m =>
-          new Date(
-            m.t
-          ).getTime() >=
-          limiteDebit
-      )
-      .sort(
-        (a, b) =>
-          new Date(a.t).getTime() -
-          new Date(b.t).getTime()
-      )
-      .slice(-720);
-
-
+let historiqueSaintJeanPoutge =
   await env[
     "HYDRO"
-  ].put(
-    "saint_fargeau_history",
-    JSON.stringify(
-      historiqueSaintFargeau
-    )
+  ].get(
+    "saint_jean_poutge_history",
+    "json"
   );
- 
 
+if (!Array.isArray(historiqueSaintJeanPoutge)) {
+  historiqueSaintJeanPoutge = [];
+}
+
+const nouvelleMesureSaintJeanPoutge = {
+  t: heure.toISOString(),
+  debit: saintJeanPoutge.debit
+};
+
+const indexExistanteSaintJeanPoutge =
+  historiqueSaintJeanPoutge.findIndex(
+    m => m.t === nouvelleMesureSaintJeanPoutge.t
+  );
+
+if (indexExistanteSaintJeanPoutge >= 0) {
+  historiqueSaintJeanPoutge[indexExistanteSaintJeanPoutge] =
+    nouvelleMesureSaintJeanPoutge;
+} else {
+  historiqueSaintJeanPoutge.push(
+    nouvelleMesureSaintJeanPoutge
+  );
+}
+
+historiqueSaintJeanPoutge =
+  historiqueSaintJeanPoutge
+    .filter(
+      m =>
+        new Date(m.t).getTime() >= limiteDebit
+    )
+    .sort(
+      (a, b) =>
+        new Date(a.t).getTime() -
+        new Date(b.t).getTime()
+    )
+    .slice(-720);
+
+await env[
+  "HYDRO"
+].put(
+  "saint_jean_poutge_history",
+  JSON.stringify(historiqueSaintJeanPoutge)
+);
   // --------------------------------------------------
   // AROME
   // --------------------------------------------------
