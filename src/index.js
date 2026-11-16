@@ -2068,62 +2068,54 @@ async function afficherPage(
   env,
   periode = "tout"
 ) {
+  const kv = env.HYDRO;
 
-  const liste =
-    await env[
-      "HYDRO"
-    ].list({
-      prefix:
-        "debit_"
-    });
+  // Récupération de toutes les clés debit_ (pagination KV)
+  let curseur = undefined;
+  let cles = [];
 
+  do {
+    const options = {
+      prefix: "debit_",
+      limit: 1000
+    };
 
-  const clesDebit =
-    (liste.keys || [])
-      .filter(
-        key =>
-          /^debit_\d{4}-\d{2}-\d{2}T/.test(
-            key.name
-          )
-      );
+    if (curseur) {
+      options.cursor = curseur;
+    }
 
+    const liste = await kv.list(options);
 
-  if (
-    clesDebit.length === 0
-  ) {
+    const nouvellesCles = (liste.keys || [])
+      .filter(key =>
+        /^debit_\d{4}-\d{2}-\d{2}T/.test(key.name)
+      )
+      .map(key => key.name);
 
+    cles.push(...nouvellesCles);
+
+    curseur = liste.list_complete
+      ? undefined
+      : liste.cursor;
+
+  } while (curseur);
+
+  if (cles.length === 0) {
     return pageVide();
-
   }
 
+  // Sélection de la clé la plus récente
+  cles.sort();
 
-  const cles =
-    clesDebit
-      .map(
-        key =>
-          key.name
-      )
-      .sort()
-      .reverse();
+  const derniereCle = cles[cles.length - 1];
 
-
-  const derniereCle =
-    cles[0];
-
-
-  const texte =
-    await env[
-      "HYDRO"
-    ].get(
-      derniereCle
-    );
-
+  const texte = await kv.get(derniereCle);
 
   if (!texte) {
-
     return pageVide();
-
   }
+
+  const mesure = JSON.parse(texte);
 
 
   const mesure =
