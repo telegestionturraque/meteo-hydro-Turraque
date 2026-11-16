@@ -1512,8 +1512,6 @@ async function collecteEtStockage(env) {
     total:
       total,
 
-    sgl:
-      sgl
 
   };
 
@@ -2133,17 +2131,7 @@ function pageAvecMesure(
     );
 
 
-  const sgl =
-    mesure.sgl || null;
 
-
-  const sglDisponible =
-    !!(
-      sgl &&
-      sgl.aube &&
-      sgl.seine &&
-      sgl.panneciere
-    );
 
 
   // --------------------------------------------------
@@ -2224,50 +2212,6 @@ function pageAvecMesure(
 
 
   // --------------------------------------------------
-  // FORMAT DATE SGL
-  // --------------------------------------------------
-
-  function formatSGLDate(date) {
-
-    if (
-      date === null ||
-      date === undefined
-    ) {
-
-      return "—";
-
-    }
-
-    return new Date(
-      Number(date)
-    ).toLocaleString(
-      "fr-FR",
-      {
-        timeZone:
-          "Europe/Paris",
-
-        day:
-          "2-digit",
-
-        month:
-          "2-digit",
-
-        year:
-          "numeric",
-
-        hour:
-          "2-digit",
-
-        minute:
-          "2-digit"
-
-      }
-    );
-
-  }
-
-
-  // --------------------------------------------------
   // FORMAT DEBIT
   // --------------------------------------------------
 
@@ -2291,288 +2235,7 @@ function pageAvecMesure(
   }
 
 
-  // ==================================================
-  // BLOC SGL
-  // ==================================================
-
-  let blocSGL = "";
-
-
-  if (sglDisponible) {
-
-    const erreursSGL =
-      Array.isArray(
-        sgl.erreurs
-      )
-        ? sgl.erreurs
-        : [];
-
-
-    blocSGL = `
-
-<h2>
-Seine Grands Lacs
-</h2>
-
-<div
-  style="
-    display:flex;
-    align-items:baseline;
-    gap:12px;
-  "
->
-
-<div class="sgl-total">
-
-${formatDebit(
-  sgl.total
-)}
-m³/s
-
-</div>
-
-<div class="subtitle">
-
-Débit cumulé restitué par SGL
-
-</div>
-
-</div>
-
-
-<table
-  style="
-    margin-top:10px
-  "
->
-
-<tr>
-
-<th>
-Restitution
-</th>
-
-<th>
-Débit
-</th>
-
-<th>
-Mesure
-</th>
-
-</tr>
-
-
-<tr>
-
-<td>
-Aube
-</td>
-
-<td>
-
-${formatDebit(
-  sgl.aube.total
-)}
-m³/s
-
-</td>
-
-<td class="station-date">
-
-Aube5 :
-${sgl.aube.aube5
-  ? formatSGLDate(
-      sgl.aube.aube5.date
-    )
-  : "ERREUR"}
-
-<br>
-
-Aube6 :
-${sgl.aube.aube6
-  ? formatSGLDate(
-      sgl.aube.aube6.date
-    )
-  : "ERREUR"}
-
-<br>
-
-Aube7 :
-${sgl.aube.aube7
-  ? formatSGLDate(
-      sgl.aube.aube7.date
-    )
-  : "ERREUR"}
-
-<br>
-
-Aube10 :
-${sgl.aube.aube10
-  ? formatSGLDate(
-      sgl.aube.aube10.date
-    )
-  : "ERREUR"}
-
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>
-Seine
-</td>
-
-<td>
-
-${formatDebit(
-  sgl.seine.debit
-)}
-m³/s
-
-</td>
-
-<td class="station-date">
-
-${sgl.seine.mesure
-  ? formatSGLDate(
-      sgl.seine.mesure.date
-    )
-  : "ERREUR"}
-
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>
-Pannecière → Yonne
-</td>
-
-<td>
-
-${formatDebit(
-  sgl.panneciere.debitRelache
-)}
-m³/s
-
-</td>
-
-<td class="station-date">
-
-M :
-${sgl.panneciere.montigny
-  ? formatSGLDate(
-      sgl.panneciere.montigny.date
-    )
-  : "ERREUR"}
-
-<br>
-
-C :
-${sgl.panneciere.corancy
-  ? formatSGLDate(
-      sgl.panneciere.corancy.date
-    )
-  : "ERREUR"}
-
-</td>
-
-</tr>
-
-
-<tr class="total">
-
-<td>
-TOTAL SGL
-</td>
-
-<td>
-
-${formatDebit(
-  sgl.total
-)}
-m³/s
-
-</td>
-
-<td></td>
-
-</tr>
-
-</table>
-
-
-${
-  erreursSGL.length > 0
-
-  ? `
-
-<div class="warning">
-
-⚠ Erreur sur une ou plusieurs mesures SGL :
-
-<br><br>
-
-${erreursSGL.join(
-  "<br>"
-)}
-
-<br><br>
-
-Les autres valeurs disponibles sont conservées dans le calcul.
-
-</div>
-
-`
-
-  : ""
-
-}
-
-`;
-
-  } else {
-
-    blocSGL = `
-
-<h2>
-Seine Grands Lacs
-</h2>
-
-<div class="sgl-total">
-
-—
-
-</div>
-
-<div class="subtitle">
-
-Débit cumulé restitué par SGL
-
-</div>
-
-<div class="sgl-error">
-
-Données SGL non disponibles pour cette mesure.
-
-<br><br>
-
-Erreur :
-
-${sgl?.erreur ||
-  "erreur inconnue"}
-
-</div>
-
-`;
-
-  }
-
+ 
 
 // ==================================================
 // GRAPHE DEBIT — CHARTRETTES + SAINT-FARGEAU
@@ -3322,10 +2985,6 @@ body {
   grid-area: debit;
 }
 
-.sgl-card {
-  grid-area: sgl;
-}
-
 .graph-card {
   grid-area: graph;
 }
@@ -3353,28 +3012,6 @@ body {
     hidden;
 
 }
-.sgl-card h2 {
-  font-size: 15px;
-  margin-bottom: 6px;
-}
-
-.sgl-card .sgl-total {
-  font-size: 24px;
-  margin: 2px 0 6px;
-}
-
-.sgl-card table {
-  font-size: 11px;
-}
-
-.sgl-card th,
-.sgl-card td {
-  padding: 4px;
-}
-
-.sgl-card .station-date {
-  font-size: 9px;
-}
 
 .card h2 {
 
@@ -3399,21 +3036,6 @@ body {
     4px 0 8px;
 
 }
-
-
-.sgl-total {
-
-  font-size:
-    32px;
-
-  font-weight:
-    bold;
-
-  margin:
-    4px 0 12px;
-
-}
-
 
 .subtitle {
 
@@ -3506,27 +3128,7 @@ td {
 }
 
 
-.sgl-error {
 
-  margin-top:
-    15px;
-
-  padding:
-    8px;
-
-  background:
-    #f3f5f7;
-
-  border-radius:
-    5px;
-
-  font-size:
-    12px;
-
-  color:
-    #777;
-
-}
 
 
 .placeholder {
