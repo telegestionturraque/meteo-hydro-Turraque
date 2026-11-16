@@ -1998,42 +1998,6 @@ function pageAvecMesure(
   periode = "tout"
 ) {
 
- 
-  // --------------------------------------------------
-  // DÉCALAGE VIGICRUES
-  // --------------------------------------------------
-
-  let decalageMinutes =
-    0;
-
-
-  if (
-    montereau.observation &&
-    episy.observation
-  ) {
-
-    const dateM =
-      new Date(
-        montereau.observation
-      );
-
-    const dateE =
-      new Date(
-        episy.observation
-      );
-
-    decalageMinutes =
-      Math.abs(
-        dateM.getTime() -
-        dateE.getTime()
-      ) / 60000;
-
-  }
-
-
-  const decalageSuperieurUneHeure =
-    decalageMinutes > 60;
-
 
   // --------------------------------------------------
   // FORMAT DATE VIGICRUES
@@ -3272,25 +3236,6 @@ m³/s
 </table>
 
 
-${
-  decalageSuperieurUneHeure
-
-    ? `
-
-<div class="warning">
-
-⚠ Attention : décalage des relevés entre les stations :
-${Math.round(
-  decalageMinutes
-)}
-minutes
-
-</div>
-
-`
-
-    : ""
-}
 
 
 </div>
