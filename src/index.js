@@ -3091,18 +3091,19 @@ ${formatDate(
 
 </div>
 <!-- ============================================== -->
-<!-- DEBIT TRIE-SUR-BAÏSE -->
+<!-- DEBITS -->
 <!-- ============================================== -->
 
 <div class="card debit-card">
 
-<h2>
-Débit — Trie-sur-Baïse
-</h2>
+<h2>Débits Vigicrues</h2>
+
+<div class="station-date">
+Trie-sur-Baïse
+</div>
 
 <div class="main-value">
-${formatDebit(mesure.trieSurBaise.debit)}
-m³/s
+${formatDebit(mesure.trieSurBaise.debit)} m³/s
 </div>
 
 <div class="station-date">
@@ -3110,22 +3111,14 @@ Mesure :
 ${formatDate(mesure.trieSurBaise.observation)}
 </div>
 
+<hr>
+
+<div class="station-date">
+Saint-Jean-Poutge
 </div>
 
-
-<!-- ============================================== -->
-<!-- DEBIT SAINT-JEAN-POUTGE -->
-<!-- ============================================== -->
-
-<div class="card debit-card">
-
-<h2>
-Débit — Saint-Jean-Poutge
-</h2>
-
 <div class="main-value">
-${formatDebit(mesure.saintJeanPoutge.debit)}
-m³/s
+${formatDebit(mesure.saintJeanPoutge.debit)} m³/s
 </div>
 
 <div class="station-date">
@@ -3134,8 +3127,6 @@ ${formatDate(mesure.saintJeanPoutge.observation)}
 </div>
 
 </div>
-
-
 <!-- ============================================== -->
 <!-- GRAPHE -->
 <!-- ============================================== -->
