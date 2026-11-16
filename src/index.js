@@ -2116,9 +2116,6 @@ async function afficherPage(
   }
 
   const mesure = JSON.parse(texte);
-
-
-  const mesure =
     JSON.parse(
       texte
     );
