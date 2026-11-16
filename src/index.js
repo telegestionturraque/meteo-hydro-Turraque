@@ -1435,24 +1435,15 @@ async function getDebit(station) {
 
 async function collecteEtStockage(env) {
 
-  const montereau =
-    await getDebit(
-      "F400000102"
-    );
+  const trieSurBaise =
+  await getDebit(
+    "O650251001"
+  );
 
-  const episy =
-    await getDebit(
-      "F439000101"
-    );
-
-  const total =
-    montereau.debit +
-    episy.debit;
- 
-  const saintFargeau =
-    await getDebit(
-      "F447000302"
-    );
+const saintJeanPoutge =
+  await getDebit(
+    "O661291001"
+  );
 
   
 
@@ -1489,30 +1480,19 @@ async function collecteEtStockage(env) {
     collecte:
       maintenant.toISOString(),
 
-    montereau: {
+     trieSurBaise: {
+    debit:
+      trieSurBaise.debit,
+    observation:
+      trieSurBaise.dateObservation
+  },
 
-      debit:
-        montereau.debit,
-
-      observation:
-        montereau.dateObservation
-
-    },
-
-    episy: {
-
-      debit:
-        episy.debit,
-
-      observation:
-        episy.dateObservation
-
-    },
-
-    total:
-      total,
-
-
+  saintJeanPoutge: {
+    debit:
+      saintJeanPoutge.debit,
+    observation:
+      saintJeanPoutge.dateObservation
+  }
   };
 
 
