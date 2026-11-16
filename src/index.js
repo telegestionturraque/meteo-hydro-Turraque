@@ -201,7 +201,7 @@ async function collecteRadar(env) {
 
   console.log(
     "RADAR API KEY PRESENT",
-    !!env.METEOFRANCE_API_KEY
+    !!env.METEOFRANCE_AROME_API_KEY
   );
 
   const response =
@@ -210,7 +210,7 @@ async function collecteRadar(env) {
       {
         headers: {
           apikey:
-            env.METEOFRANCE_API_KEY
+            env.METEOFRANCE_AROME_API_KEY
         }
       }
     );
@@ -466,7 +466,7 @@ async function collectePrevisionsAROME(env) {
       {
         headers: {
           apikey:
-            env.METEOFRANCE_API_KEY
+            env.METEOFRANCE_AROME_API_KEY
         }
       }
     );
@@ -650,7 +650,7 @@ async function collectePrevisionsAROME(env) {
       {
         headers: {
           apikey:
-            env.METEOFRANCE_API_KEY
+            env.METEOFRANCE_AROME_API_KEY
         }
       }
     );
