@@ -1785,46 +1785,35 @@ async function afficherPage(
 
   }
 
+// --------------------------------------------------
+// HISTORIQUE DEBIT TRIE-SUR-BAISE
+// --------------------------------------------------
 
-  // --------------------------------------------------
-  // HISTORIQUE DEBIT
-  // --------------------------------------------------
+const historiqueTrieSurBaise =
+  await env["HYDRO"].get(
+    "trie_sur_baise_history",
+    "json"
+  );
 
-  const historiqueDebit =
-    await env[
-      "HYDRO"
-    ].get(
-      "debit_history",
-      "json"
-    );
-
-
-  const debitGraphComplet =
-  Array.isArray(
-    historiqueDebit
-  )
-    ? historiqueDebit
+const trieSurBaiseGraphComplet =
+  Array.isArray(historiqueTrieSurBaise)
+    ? historiqueTrieSurBaise
     : [];
 
 
 // --------------------------------------------------
-// HISTORIQUE SAINT-FARGEAU-PONTHIERRY
+// HISTORIQUE DEBIT SAINT-JEAN-POUTGE
 // --------------------------------------------------
 
-const historiqueSaintFargeau =
-  await env[
-    "HYDRO"
-  ].get(
-    "saint_fargeau_history",
+const historiqueSaintJeanPoutge =
+  await env["HYDRO"].get(
+    "saint_jean_poutge_history",
     "json"
   );
 
-
-const saintFargeauGraphComplet =
-  Array.isArray(
-    historiqueSaintFargeau
-  )
-    ? historiqueSaintFargeau
+const saintJeanPoutgeGraphComplet =
+  Array.isArray(historiqueSaintJeanPoutge)
+    ? historiqueSaintJeanPoutge
     : [];
 
 
@@ -1848,22 +1837,22 @@ const dureesPeriode = {
 
 // Par défaut : tout l'historique disponible
 
-let debitGraph =
-  debitGraphComplet;
+let trieSurBaiseGraph =
+  trieSurBaiseGraphComplet;
 
-let saintFargeauGraph =
-  saintFargeauGraphComplet;
+let saintJeanPoutgeGraph =
+  saintJeanPoutgeGraphComplet;
 
 
 if (
   dureesPeriode[periode] &&
-  debitGraphComplet.length > 0
+  trieSurBaiseGraphComplet.length > 0
 ) {
 
   const derniereDate =
     new Date(
-      debitGraphComplet[
-        debitGraphComplet.length - 1
+      trieSurBaiseGraphComplet[
+        trieSurBaiseGraphComplet.length - 1
       ].t
     ).getTime();
 
@@ -1872,23 +1861,19 @@ if (
     dureesPeriode[periode];
 
 
-  debitGraph =
-    debitGraphComplet.filter(
-      p =>
-        new Date(p.t).getTime() >=
-        limite
-    );
+trieSurBaiseGraph =
+  trieSurBaiseGraphComplet.filter(
+    p => new Date(p.t).getTime() >= limite
+  );
 
 
-  saintFargeauGraph =
-    saintFargeauGraphComplet.filter(
-      p =>
-        new Date(p.t).getTime() >=
-        limite
+  saintJeanPoutgeGraph =
+    saintJeanPoutgeGraphComplet.filter(
+      p => new Date(p.t).getTime() >= limite
     );
 
 }
-
+  
   // --------------------------------------------------
   // PREVISIONS
   // --------------------------------------------------
@@ -1903,8 +1888,8 @@ if (
   return pageAvecMesure(
     mesure,
     radar,
-    debitGraph,
-    saintFargeauGraph,
+     trieSurBaiseGraph,
+    saintJeanPoutgeGraph,
     previsions,
     periode
   );
