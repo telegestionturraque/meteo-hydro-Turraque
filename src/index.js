@@ -1,87 +1,35 @@
 import h5wasm from "h5wasm";
 import * as GeoTIFF from "geotiff";
 
+
 const RADAR_POINTS = [
   {
-    nom: "Montargis",
-    bassin: "Loing",
+    nom: "Lannemezan",
+    bassin: "Baïse",
     position: "Amont",
-    latitude: 47.9978628,
-    longitude: 2.7310072,
-    ligne: 1312,
-    colonne: 1638
+    latitude: 43.1250,
+    longitude: 0.3840
   },
   {
-    nom: "Nemours",
-    bassin: "Loing",
-    position: "Médian",
-    latitude: 48.2680260,
-    longitude: 2.6953079,
-    ligne: 1254,
-    colonne: 1630
-  },
-  {
-    nom: "Château-Landon",
-    bassin: "Loing",
-    position: "Aval",
-    latitude: 48.1496366,
-    longitude: 2.7032718,
-    ligne: 1279,
-    colonne: 1632
-  },
-  {
-    nom: "Auxerre",
-    bassin: "Yonne",
+    nom: "Trie-sur-Baïse",
+    bassin: "Baïse",
     position: "Amont",
-    latitude: 47.7961287,
-    longitude: 3.5705790,
-    ligne: 1349,
-    colonne: 1763
+    latitude: 43.3207,
+    longitude: 0.3704
   },
   {
-    nom: "Joigny",
-    bassin: "Yonne",
+    nom: "Mirande",
+    bassin: "Baïse",
     position: "Médian",
-    latitude: 47.9812486,
-    longitude: 3.3995767,
-    ligne: 1310,
-    colonne: 1736
+    latitude: 43.5142,
+    longitude: 0.4015
   },
   {
-    nom: "Pont-sur-Yonne",
-    bassin: "Yonne",
+    nom: "Beaucaire",
+    bassin: "Baïse",
     position: "Aval",
-    latitude: 48.2852895,
-    longitude: 3.2045813,
-    ligne: 1246,
-    colonne: 1704
-  },
-  {
-    nom: "Nogent-sur-Seine",
-    bassin: "Seine",
-    position: "Amont",
-    latitude: 48.4924390,
-    longitude: 3.4978181,
-    ligne: 1199,
-    colonne: 1743
-  },
-  {
-    nom: "Montereau",
-    bassin: "Seine",
-    position: "Médian",
-    latitude: 47.8564484,
-    longitude: 2.5717138,
-    ligne: 1344,
-    colonne: 1616
-  },
-  {
-    nom: "Chartrettes",
-    bassin: "Seine",
-    position: "Aval",
-    latitude: 48.4881157,
-    longitude: 2.7005289,
-    ligne: 1206,
-    colonne: 1628
+    latitude: 43.8378,
+    longitude: 0.3851
   }
 ];
 
