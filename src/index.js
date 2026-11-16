@@ -1385,53 +1385,46 @@ async function getDebit(station) {
     `&GrdSerie=Q` +
     `&FormatDate=iso`;
 
-  const response =
-    await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      "Accept": "application/json",
+      "User-Agent": "Mozilla/5.0 (compatible; MeteoHydroChartrettes/1.0)"
+    }
+  });
 
   if (!response.ok) {
-
     throw new Error(
       `Vigicrues HTTP ${response.status}`
     );
-
   }
 
-  const data =
-    await response.json();
+  const data = await response.json();
 
   const observations =
     data?.Serie?.ObssHydro;
 
   if (
-    !Array.isArray(
-      observations
-    ) ||
+    !Array.isArray(observations) ||
     observations.length === 0
   ) {
-
     throw new Error(
       `Aucune observation pour ${station}`
     );
-
   }
 
   const derniere =
-    observations[
-      observations.length - 1
-    ];
+    observations[observations.length - 1];
+
+  if (!derniere) {
+    throw new Error(
+      `Aucune observation pour ${station}`
+    );
+  }
 
   return {
-
-    debit:
-      Number(
-        derniere.ResObsHydro
-      ),
-
-    dateObservation:
-      derniere.DtObsHydro
-
+    debit: Number(derniere.ResObsHydro),
+    dateObservation: derniere.DtObsHydro
   };
-
 }
 
 
