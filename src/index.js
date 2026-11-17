@@ -2429,9 +2429,9 @@ ${(() => {
       ((temps - debutMs) / (finMs - debutMs)) * graphW;
 
 resultat.push(
-  '<text x="' + x + '" y="' + (hauteur - margeBas + 85) +
+  '<text x="' + x + '" y="' + (hauteur - margeBas + 15) +
   '" font-size="10" fill="#666" text-anchor="start" ' +
-  'transform="rotate(-90 ' + x + ' ' + (hauteur - margeBas + 85) + ')">' +
+  'transform="rotate(-90 ' + x + ' ' + (hauteur - margeBas + 15) + ')">' +
   date.toLocaleString("fr-FR", {
     day: "2-digit",
     month: "2-digit",
@@ -2455,11 +2455,11 @@ resultat.push(
 
 <text
   x="${largeur - margeDroite}"
-  y="${hauteur - margeBas + 85}"
+  y="${hauteur - margeBas + 15}"
   text-anchor="start"
   font-size="10"
   fill="#666"
-  transform="rotate(-90 ${largeur - margeDroite} ${hauteur - margeBas + 85})"
+  transform="rotate(-90 ${largeur - margeDroite} ${hauteur - margeBas + 15})"
 >
 ${new Date(
   trieSurBaiseGraph[
