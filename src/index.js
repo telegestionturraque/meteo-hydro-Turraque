@@ -3453,7 +3453,7 @@ const pointSaintJeanPoutge =
   function afficher(index) {
 
     const p =
-      data[index];
+      dataTrieSurBaise[index];
 
     if (!p) {
       return;
