@@ -3415,7 +3415,6 @@ const pointSaintJeanPoutge =
   const valeurs = [
     ...dataTrieSurBaise,
     ...dataSaintJeanPoutge
-  ];
   ]
     .map(
       p =>
