@@ -2429,9 +2429,9 @@ ${(() => {
       ((temps - debutMs) / (finMs - debutMs)) * graphW;
 
 resultat.push(
-  '<text x="' + x + '" y="' + (hauteur - 8) +
+  '<text x="' + x + '" y="' + (hauteur - margeBas + 85) +
   '" font-size="10" fill="#666" text-anchor="end" ' +
-  'transform="rotate(-90 ' + x + ' ' + (hauteur - 8) + ')">' +
+  'transform="rotate(-90 ' + x + ' ' + (hauteur - margeBas + 85) + ')">' +
   date.toLocaleString("fr-FR", {
     day: "2-digit",
     month: "2-digit",
@@ -2455,18 +2455,25 @@ resultat.push(
 
 <text
   x="${largeur - margeDroite}"
-  y="${hauteur - 8}"
+  y="${hauteur - margeBas + 85}"
   text-anchor="end"
-  font-size="11"
+  font-size="10"
   fill="#666"
+  transform="rotate(-90 ${largeur - margeDroite} ${hauteur - margeBas + 85})"
 >
 ${new Date(
   trieSurBaiseGraph[
     trieSurBaiseGraph.length - 1
   ].t
-).toLocaleDateString(
-  "fr-FR"
-)}
+).toLocaleString("fr-FR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+  timeZone: "Europe/Paris"
+}).replace(" ", "-").replace(":", "-")}
 </text>
 
 `;
