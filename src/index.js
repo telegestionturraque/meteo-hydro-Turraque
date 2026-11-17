@@ -2586,7 +2586,7 @@ const tableauPrevisions =
 <div class="radar-table">
 
 <h2>
-Précipitations prévues
+Précipitations prévues (source : Météofrance)
 </h2>
 
 <table>
@@ -3324,7 +3324,7 @@ Saint-Jean-Poutge
 <div class="card radar-card">
 
   <h2>
-  Précipitations cumulées radar
+  Précipitations cumulées radar ((source : Météofrance DP radar)
   </h2>
 
   ${tableauRadar}
