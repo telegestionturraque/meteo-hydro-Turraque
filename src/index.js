@@ -3382,7 +3382,7 @@ const pointSaintJeanPoutge =
   if (
     !svg ||
     !hitbox ||
-    !data.length
+    !dataTrieSurBaise.length
   ) {
     return;
   }
