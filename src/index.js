@@ -2428,16 +2428,21 @@ ${(() => {
       margeGauche +
       ((temps - debutMs) / (finMs - debutMs)) * graphW;
 
-    resultat.push(
-      '<text x="' + x + '" y="' + (hauteur - 8) +
-      '" font-size="11" fill="#666" text-anchor="middle">' +
-      date.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "Europe/Paris"
-      }) +
-      '</text>'
-    );
+resultat.push(
+  '<text x="' + x + '" y="' + (hauteur - 8) +
+  '" font-size="10" fill="#666" text-anchor="end" ' +
+  'transform="rotate(-90 ' + x + ' ' + (hauteur - 8) + ')">' +
+  date.toLocaleString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Europe/Paris"
+  }).replace(" ", "-").replace(":", "-") +
+  '</text>'
+);
 
     temps += 4 * 3600000;
   }
