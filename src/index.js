@@ -2099,7 +2099,7 @@ Données insuffisantes
     const margeGauche = 55;
     const margeDroite = 15;
     const margeHaut = 15;
-    const margeBas = 30;
+    const margeBas = 100;
 
     const graphW =
       largeur -
