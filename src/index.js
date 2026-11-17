@@ -3465,7 +3465,7 @@ const pointSaintJeanPoutge =
       (
         index /
         (
-          data.length -
+           dataTrieSurBaise.length -
           1
         )
       ) *
