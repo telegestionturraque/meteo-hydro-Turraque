@@ -2413,28 +2413,38 @@ ${(() => {
   const debut = new Date(trieSurBaiseGraph[0].t);
   const fin = new Date(trieSurBaiseGraph[trieSurBaiseGraph.length - 1].t);
 
-  let date = new Date(debut);
-  date.setMinutes(0, 0, 0);
-  date.setHours(date.getHours() + (4 - date.getHours() % 4) % 4);
+  const debutMs = debut.getTime();
+  const finMs = fin.getTime();
 
-  let resultat = "";
+  const resultat = [];
 
-  while (date <= fin) {
-    const x = margeGauche +
-      (date.getTime() - debut.getTime()) /
-      (fin.getTime() - debut.getTime()) * graphW;
+  // Première graduation à une heure UTC multiple de 4
+  let temps = Math.ceil(debutMs / (4 * 3600000)) * (4 * 3600000);
 
-    resultat +=
+  while (temps <= finMs) {
+    const date = new Date(temps);
+
+    const x =
+      margeGauche +
+      ((temps - debutMs) / (finMs - debutMs)) * graphW;
+
+    resultat.push(
       '<text x="' + x + '" y="' + (hauteur - 8) +
       '" font-size="11" fill="#666" text-anchor="middle">' +
-      date.toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"}) +
-      '</text>';
+      date.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Europe/Paris"
+      }) +
+      '</text>'
+    );
 
-    date.setHours(date.getHours() + 4);
+    temps += 4 * 3600000;
   }
 
-  return resultat;
+  return resultat.join("");
 })()}
+
 
 
 
