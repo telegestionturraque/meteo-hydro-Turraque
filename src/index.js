@@ -3513,7 +3513,7 @@ const pointSaintJeanPoutge =
     );
 
 
-    if (pSF) {
+    if (pSJP) {
 
       const ySJP =
         margeHaut +
@@ -3521,7 +3521,7 @@ const pointSaintJeanPoutge =
         (
           (
             Number(
-              pSF.debit
+              pSJP.debit
             ) -
             minDebit
           ) /
