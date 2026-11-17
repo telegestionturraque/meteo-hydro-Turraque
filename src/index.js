@@ -2407,22 +2407,45 @@ ${
   pointer-events="none"
 />
 
-
-
 <!-- DATES -->
 
-<text
-  x="${margeGauche}"
-  y="${hauteur - 8}"
-  font-size="11"
-  fill="#666"
->
-${new Date(
-  trieSurBaiseGraph[0].t
-).toLocaleDateString(
-  "fr-FR"
-)}
-</text>
+${(() => {
+  const debut = new Date(trieSurBaiseGraph[0].t);
+  const fin = new Date(trieSurBaiseGraph[trieSurBaiseGraph.length - 1].t);
+
+  const debutGraduation = new Date(debut);
+  debutGraduation.setHours(debutGraduation.getHours() + 4 - (debutGraduation.getHours() % 4));
+  debutGraduation.setMinutes(0, 0, 0);
+
+  let textes = "";
+
+  for (
+    let date = new Date(debutGraduation);
+    date <= fin;
+    date.setHours(date.getHours() + 4)
+  ) {
+    const x = margeGauche +
+      ((date.getTime() - debut.getTime()) /
+      (fin.getTime() - debut.getTime())) * graphW;
+
+    textes += `
+      <text
+        x="${x}"
+        y="${hauteur - 8}"
+        font-size="11"
+        fill="#666"
+        text-anchor="middle"
+      >${date.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      })}</text>
+    `;
+  }
+
+  return textes;
+})()}
+
+
 
 
 <text
