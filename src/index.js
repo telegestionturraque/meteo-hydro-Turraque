@@ -3473,16 +3473,15 @@ const pointSaintJeanPoutge =
     }
 
 
-    const x =
-      margeGauche +
-      (
-        index /
-        (
-           dataTrieSurBaise.length -
-          1
-        )
-      ) *
-      graphW;
+const debut = new Date(dataTrieSurBaise[0].t).getTime();
+const fin = new Date(dataTrieSurBaise[dataTrieSurBaise.length - 1].t).getTime();
+
+const x =
+  margeGauche +
+  (
+    (new Date(p.t).getTime() - debut) /
+    (fin - debut)
+  ) * graphW;
 
 
     // ------------------------------------------------
@@ -3818,53 +3817,36 @@ tooltip.innerHTML =
   // POSITION SOURIS
   // --------------------------------------------------
 
-  function positionDepuisEvenement(
-    event
-  ) {
+function positionDepuisEvenement(event) {
 
-    const rect =
-      svg.getBoundingClientRect();
+  const rect = svg.getBoundingClientRect();
 
+  const x =
+    (event.clientX - rect.left) /
+    rect.width *
+    largeur;
 
-    const x =
-      (
-        event.clientX -
-        rect.left
-      ) /
-      rect.width *
-      largeur;
+  const debut = new Date(dataTrieSurBaise[0].t).getTime();
+  const fin = new Date(dataTrieSurBaise[dataTrieSurBaise.length - 1].t).getTime();
 
+  const tempsCible =
+    debut +
+    ((x - margeGauche) / graphW) * (fin - debut);
 
-    let index =
-      Math.round(
-        (
-          x -
-          margeGauche
-        ) /
-        graphW *
-        (
-          dataTrieSurBaise.length -
-          1
-        )
-      );
+  let index = 0;
+  let ecartMin = Infinity;
 
+  dataTrieSurBaise.forEach((p, i) => {
+    const ecart = Math.abs(new Date(p.t).getTime() - tempsCible);
 
-    index =
-      Math.max(
-        0,
-        Math.min(
-          dataTrieSurBaise.length -
-          1,
-          index
-        )
-      );
+    if (ecart < ecartMin) {
+      ecartMin = ecart;
+      index = i;
+    }
+  });
 
-
-    afficher(
-      index
-    );
-
-  }
+  afficher(index);
+}
 
 
   svg.addEventListener(
