@@ -3830,7 +3830,7 @@ tooltip.innerHTML =
         ) /
         graphW *
         (
-          data.length -
+          dataTrieSurBaise.length -
           1
         )
       );
@@ -3840,7 +3840,7 @@ tooltip.innerHTML =
       Math.max(
         0,
         Math.min(
-          data.length -
+          dataTrieSurBaise.length -
           1,
           index
         )
