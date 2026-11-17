@@ -3324,7 +3324,7 @@ Saint-Jean-Poutge
 <div class="card radar-card">
 
   <h2>
-  Précipitations cumulées radar ((source : Météofrance DP radar)
+  Précipitations cumulées radar (source : Météofrance radar)
   </h2>
 
   ${tableauRadar}
