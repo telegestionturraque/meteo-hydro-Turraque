@@ -2430,7 +2430,7 @@ ${(() => {
 
 resultat.push(
   '<text x="' + x + '" y="' + (hauteur - margeBas + 85) +
-  '" font-size="10" fill="#666" text-anchor="end" ' +
+  '" font-size="10" fill="#666" text-anchor="start" ' +
   'transform="rotate(-90 ' + x + ' ' + (hauteur - margeBas + 85) + ')">' +
   date.toLocaleString("fr-FR", {
     day: "2-digit",
@@ -2456,7 +2456,7 @@ resultat.push(
 <text
   x="${largeur - margeDroite}"
   y="${hauteur - margeBas + 85}"
-  text-anchor="end"
+  text-anchor="start"
   font-size="10"
   fill="#666"
   transform="rotate(-90 ${largeur - margeDroite} ${hauteur - margeBas + 85})"
