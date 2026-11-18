@@ -157,11 +157,6 @@ async function collecteRadar(env) {
     "https://public-api.meteofrance.fr/public/DPRadar/v1/" +
     "mosaiques/METROPOLE/observations/LAME_D_EAU/produit?maille=500";
 
-  console.log(
-    "RADAR API KEY PRESENT",
-    !!env.METEOFRANCE_AROME_API_KEY
-  );
-
   const response =
     await fetch(
       url,
@@ -177,19 +172,6 @@ async function collecteRadar(env) {
     "RADAR HTTP",
     response.status
   );
-
-console.log(
-  "RADAR ERREUR DETAIL",
-  JSON.stringify({
-    status: response.status,
-    headers: Object.fromEntries(
-      response.headers.entries()
-    ),
-    body: !response.ok
-      ? await response.clone().text()
-      : "OK"
-  })
-);
 
   
   if (!response.ok) {
@@ -264,39 +246,15 @@ for (const nom of [
   try {
     const attr = where.attrs[nom];
 
-    console.log(
-      "RADAR GEO",
-      nom,
-      attr ? String(attr.value) : "ABSENT"
-    );
   } catch (e) {
     console.log("RADAR GEO", nom, "ERREUR", String(e));
   }
 }
-console.log(
-  "RADAR WHERE",
-  JSON.stringify({
-    keys: where.keys(),
-    attrs: lireAttributs(where)
-  }, (key, value) =>
-    typeof value === "bigint"
-      ? value.toString()
-      : value
-  )
-);
 
 for (const nom of where.keys()) {
   const obj = file.get("where/" + nom);
 
-  console.log(
-    "RADAR WHERE ITEM",
-    nom,
-    JSON.stringify({
-      attrs: lireAttributs(obj),
-      shape: obj.shape,
-      value: obj.value
-    })
-  );
+
 }
 
 
@@ -314,24 +272,7 @@ for (const nom of where.keys()) {
   );
 }
 
-console.log(
-  "RADAR METADATA",
-  JSON.stringify({
-    racine: file.keys(),
 
-    dataset1: lireAttributs(
-      file.get("dataset1")
-    ),
-
-    data1: lireAttributs(
-      file.get("dataset1/data1")
-    ),
-
-    data: lireAttributs(dataset),
-
-    metadata: dataset.metadata
-  })
-);
 
   
   const data =
@@ -339,22 +280,8 @@ console.log(
 
   const cols =
     dataset.shape[1];
+ 
 
-
-
-
-  
-console.log(
-  "RADAR DIAGNOSTIC",
-  JSON.stringify({
-    shape: dataset.shape,
-    cols: cols,
-    dataLength: data.length,
-    dataType: data.constructor.name,
-    points: RADAR_POINTS,
-    premierPoint: RADAR_POINTS[0]
-  })
-); 
   for (const point of RADAR_POINTS) {
 
   const index =
@@ -787,13 +714,6 @@ async function collectePrevisionsAROME(env) {
 
   const resolution =
     image.getResolution();
-console.log("GEOTIFF DEBUG", {
-  width,
-  height: image.getHeight(),
-  origin,
-  resolution,
-  bbox: image.getBoundingBox()
-});
   const raster =
     await image.readRasters({
       interleave: true
