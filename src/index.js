@@ -225,7 +225,7 @@ async function collecteRadar(env) {
     file.get(
       "dataset1/data1/data"
     );
-
+const where = file.get("where");
   console.log(
   "RADAR WHERE",
   JSON.stringify({
@@ -262,7 +262,7 @@ for (const nom of where.keys()) {
     )
   );
 }
-const where = file.get("where");
+
 
 console.log(
   "RADAR WHERE",
