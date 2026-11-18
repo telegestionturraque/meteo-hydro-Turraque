@@ -232,6 +232,45 @@ async function collecteRadar(env) {
   const cols =
     dataset.shape[1];
 
+
+
+
+  
+console.log(
+  "RADAR DIAGNOSTIC",
+  JSON.stringify({
+    shape: dataset.shape,
+    cols: cols,
+    dataLength: data.length,
+    dataType: data.constructor.name,
+    points: RADAR_POINTS,
+    premierPoint: RADAR_POINTS[0]
+  })
+); 
+  for (const point of RADAR_POINTS) {
+
+  const index =
+    point.ligne * cols +
+    point.colonne;
+
+  console.log(
+    "RADAR PIXEL",
+    JSON.stringify({
+      ligne: point.ligne,
+      colonne: point.colonne,
+      index: index,
+      longueur: data.length,
+      valeur: data[index]
+    })
+  );
+
+}
+
+
+
+
+  
+
   const pluies =
     RADAR_POINTS.map(
       point => {
