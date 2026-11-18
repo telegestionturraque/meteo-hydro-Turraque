@@ -225,7 +225,39 @@ async function collecteRadar(env) {
     file.get(
       "dataset1/data1/data"
     );
+  function lireAttributs(obj) {
+  const attrs = obj.attrs || {};
 
+  return Object.fromEntries(
+    Object.entries(attrs).map(
+      ([nom, attr]) => [
+        nom,
+        attr.value
+      ]
+    )
+  );
+}
+
+console.log(
+  "RADAR METADATA",
+  JSON.stringify({
+    racine: file.keys(),
+
+    dataset1: lireAttributs(
+      file.get("dataset1")
+    ),
+
+    data1: lireAttributs(
+      file.get("dataset1/data1")
+    ),
+
+    data: lireAttributs(dataset),
+
+    metadata: dataset.metadata
+  })
+);
+
+  
   const data =
     dataset.value;
 
