@@ -2,34 +2,43 @@ import h5wasm from "h5wasm";
 import * as GeoTIFF from "geotiff";
 
 
+
 const RADAR_POINTS = [
   {
     nom: "Lannemezan",
     bassin: "Baïse",
     position: "Amont",
-    latitude: 43.1250,
-    longitude: 0.3840
+    latitude: 43.125,
+    longitude: 0.384,
+    ligne: 2400,
+    colonne: 1302
   },
   {
     nom: "Trie-sur-Baïse",
     bassin: "Baïse",
     position: "Amont",
     latitude: 43.3207,
-    longitude: 0.3704
+    longitude: 0.3704,
+    ligne: 2356,
+    colonne: 1300
   },
   {
     nom: "Mirande",
     bassin: "Baïse",
     position: "Médian",
     latitude: 43.5142,
-    longitude: 0.4015
+    longitude: 0.4015,
+    ligne: 2313,
+    colonne: 1304
   },
   {
     nom: "Beaucaire",
     bassin: "Baïse",
     position: "Aval",
     latitude: 43.8378,
-    longitude: 0.3851
+    longitude: 0.3851,
+    ligne: 2240,
+    colonne: 1301
   }
 ];
 
@@ -37,6 +46,7 @@ const FORECAST_POINTS =
   RADAR_POINTS.map(
     ({ ligne, colonne, ...point }) => point
   );
+
 
 
 // ==================================================
