@@ -226,12 +226,17 @@ async function collecteRadar(env) {
       "dataset1/data1/data"
     );
 const where = file.get("where");
-  console.log(
+
+console.log(
   "RADAR WHERE",
   JSON.stringify({
     keys: where.keys(),
     attrs: lireAttributs(where)
-  })
+  }, (key, value) =>
+    typeof value === "bigint"
+      ? value.toString()
+      : value
+  )
 );
 
 for (const nom of where.keys()) {
