@@ -168,6 +168,20 @@ async function collecteRadar(env) {
     response.status
   );
 
+console.log(
+  "RADAR ERREUR DETAIL",
+  JSON.stringify({
+    status: response.status,
+    headers: Object.fromEntries(
+      response.headers.entries()
+    ),
+    body: !response.ok
+      ? await response.clone().text()
+      : "OK"
+  })
+);
+
+  
   if (!response.ok) {
 
     throw new Error(
@@ -290,7 +304,6 @@ for (const nom of where.keys()) {
   );
 }
 
-);
 console.log(
   "RADAR METADATA",
   JSON.stringify({
