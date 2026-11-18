@@ -263,13 +263,6 @@ for (const nom of where.keys()) {
   );
 }
 
-
-console.log(
-  "RADAR WHERE",
-  JSON.stringify({
-    keys: where.keys(),
-    attrs: lireAttributs(where)
-  })
 );
 console.log(
   "RADAR METADATA",
