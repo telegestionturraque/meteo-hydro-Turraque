@@ -288,24 +288,7 @@ for (const nom of where.keys()) {
     point.ligne * cols +
     point.colonne;
 
-  console.log(
-    "RADAR PIXEL",
-    JSON.stringify({
-      ligne: point.ligne,
-      colonne: point.colonne,
-      index: index,
-      longueur: data.length,
-      valeur: data[index]
-    })
-  );
-
 }
-
-
-
-
-  
-
   const pluies =
     RADAR_POINTS.map(
       point => {
