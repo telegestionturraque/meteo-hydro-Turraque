@@ -225,6 +225,31 @@ async function collecteRadar(env) {
     file.get(
       "dataset1/data1/data"
     );
+
+  console.log(
+  "RADAR WHERE",
+  JSON.stringify({
+    keys: where.keys(),
+    attrs: lireAttributs(where)
+  })
+);
+
+for (const nom of where.keys()) {
+  const obj = file.get("where/" + nom);
+
+  console.log(
+    "RADAR WHERE ITEM",
+    nom,
+    JSON.stringify({
+      attrs: lireAttributs(obj),
+      shape: obj.shape,
+      value: obj.value
+    })
+  );
+}
+
+
+  
   function lireAttributs(obj) {
   const attrs = obj.attrs || {};
 
