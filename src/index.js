@@ -226,7 +226,29 @@ async function collecteRadar(env) {
       "dataset1/data1/data"
     );
 const where = file.get("where");
+for (const nom of [
+  "projdef",
+  "xsize",
+  "ysize",
+  "xscale",
+  "yscale",
+  "LL_lon",
+  "LL_lat",
+  "UL_lon",
+  "UL_lat"
+]) {
+  try {
+    const attr = where.attrs[nom];
 
+    console.log(
+      "RADAR GEO",
+      nom,
+      attr ? String(attr.value) : "ABSENT"
+    );
+  } catch (e) {
+    console.log("RADAR GEO", nom, "ERREUR", String(e));
+  }
+}
 console.log(
   "RADAR WHERE",
   JSON.stringify({
