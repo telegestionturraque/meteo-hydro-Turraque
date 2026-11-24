@@ -1423,15 +1423,14 @@ function lireValeursTIFF(
   return valeurs;
 }
 
-
- // ==================================================
- // ICON-EU - OPEN-METEO
- // ==================================================
+// ==================================================
+// ICON-EU - OPEN-METEO
+// ==================================================
 
 async function collectePrevisionsICONEU(env) {
 
   const BASE =
-    "https://api.open-meteo.com/v1/dwd-icon";
+    "https://api.open-meteo.com/v1/forecast";
 
   // --------------------------------------------------
   // 1. COORDONNEES DES 4 POINTS
@@ -1444,17 +1443,18 @@ async function collectePrevisionsICONEU(env) {
     FORECAST_POINTS.map(p => p.longitude).join(",");
 
   // --------------------------------------------------
-  // 2. REQUETE ICON
+  // 2. REQUETE ICON-EU EXPLICITE
   // --------------------------------------------------
 
   const params = new URLSearchParams();
 
   params.set("latitude", latitudes);
   params.set("longitude", longitudes);
+  params.set("models", "icon_eu");
 
   params.set(
     "hourly",
-    "precipitation,precipitation_probability"
+    "precipitation"
   );
 
   params.set("forecast_hours", "120");
@@ -1467,7 +1467,7 @@ async function collectePrevisionsICONEU(env) {
 
   if (!response.ok) {
     throw new Error(
-      `ICON HTTP ${response.status}: ` +
+      `ICON-EU HTTP ${response.status}: ` +
       await response.text()
     );
   }
@@ -1479,7 +1479,7 @@ async function collectePrevisionsICONEU(env) {
 
   if (resultats.length !== FORECAST_POINTS.length) {
     throw new Error(
-      "Nombre de points ICON inattendu"
+      "Nombre de points ICON-EU inattendu"
     );
   }
 
@@ -1506,7 +1506,7 @@ async function collectePrevisionsICONEU(env) {
         !Array.isArray(horaire.precipitation)
       ) {
         throw new Error(
-          `Données horaires ICON absentes : ${point.nom}`
+          `Données horaires ICON-EU absentes : ${point.nom}`
         );
       }
 
@@ -1518,7 +1518,7 @@ async function collectePrevisionsICONEU(env) {
 
       if (!reference) {
         throw new Error(
-          `Aucune échéance future ICON : ${point.nom}`
+          `Aucune échéance future ICON-EU : ${point.nom}`
         );
       }
 
@@ -1564,44 +1564,6 @@ async function collectePrevisionsICONEU(env) {
           : null;
       }
 
-      // --------------------------------------------------
-      // PROBABILITES HORAIRES SUR 48 H
-      // --------------------------------------------------
-
-      const probabilites = [];
-
-      if (
-        Array.isArray(
-          horaire.precipitation_probability
-        )
-      ) {
-
-        for (
-          let i = 0;
-          i < horaire.time.length;
-          i++
-        ) {
-
-          const t =
-            new Date(horaire.time[i]).getTime();
-
-          if (
-            t > debut &&
-            t <= debut + horizons[48]
-          ) {
-
-            probabilites.push({
-              t: horaire.time[i],
-              probabilite:
-                horaire.precipitation_probability[i]
-            });
-
-          }
-
-        }
-
-      }
-
       return {
 
         nom: point.nom,
@@ -1612,9 +1574,7 @@ async function collectePrevisionsICONEU(env) {
 
         pluie_24h_mm: calculerCumul(24),
         pluie_48h_mm: calculerCumul(48),
-        pluie_96h_mm: calculerCumul(96),
-
-        probabilite_horaire_48h: probabilites
+        pluie_96h_mm: calculerCumul(96)
 
       };
 
@@ -1636,6 +1596,7 @@ async function collectePrevisionsICONEU(env) {
   previsions.icon = {
 
     modele: "ICON-EU",
+    identifiant_modele: "icon_eu",
 
     updated: new Date().toISOString(),
 
@@ -1657,6 +1618,7 @@ async function collectePrevisionsICONEU(env) {
   );
 
 }
+
 
 
 // ==================================================
