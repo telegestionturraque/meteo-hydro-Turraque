@@ -1423,6 +1423,7 @@ function lireValeursTIFF(
   return valeurs;
 }
 
+
 // ==================================================
 // VIGICRUES
 // ==================================================
@@ -1714,9 +1715,30 @@ await env["HYDRO"].put(
     );
 
   }
+
+  // ==================================================
+  // ICON-EU
+  // ==================================================
+
+  console.log("AVANT ICON-EU");
+
+  try {
+
+    console.log("ICON-EU START");
+
+    await collectePrevisionsICONEU(env);
+
+    console.log("ICON-EU FIN");
+
+  } catch (error) {
+
+    console.log(
+      "ERREUR ICON-EU",
+      error.message
+    );
+
+  }
 }
-
-
 // ==================================================
 // AFFICHAGE
 // ==================================================
