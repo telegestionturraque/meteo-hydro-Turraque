@@ -57,7 +57,7 @@ export default {
 async scheduled(event, env, ctx) {
 
   // --------------------------------------------------
-  // RADAR : toutes les 10 minutes
+  // RADAR : toutes les heures
   // --------------------------------------------------
 
   if (event.cron === "0 * * * *") {
@@ -80,7 +80,7 @@ async scheduled(event, env, ctx) {
 
 
   // --------------------------------------------------
-  // COLLECTE GENERALE : toutes les heures
+  // COLLECTE GENERALE : privsoire 5 min
   // --------------------------------------------------
 
   if (event.cron === "*/5 * * * *") {
