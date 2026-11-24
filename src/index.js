@@ -83,7 +83,7 @@ async scheduled(event, env, ctx) {
   // COLLECTE GENERALE : toutes les heures
   // --------------------------------------------------
 
-  if (event.cron === "0 * * * *") {
+  if (event.cron === "*/5 * * * *") {
 
     console.log("CRON COLLECTE");
 
