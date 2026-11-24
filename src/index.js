@@ -60,7 +60,7 @@ async scheduled(event, env, ctx) {
   // RADAR : toutes les 10 minutes
   // --------------------------------------------------
 
-  if (event.cron === "*/10 * * * *") {
+  if (event.cron === "0 * * * *") {
 
     console.log("CRON RADAR");
 
