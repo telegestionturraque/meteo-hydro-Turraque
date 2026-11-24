@@ -1424,6 +1424,241 @@ function lireValeursTIFF(
 }
 
 
+ // ==================================================
+ // ICON-EU - OPEN-METEO
+ // ==================================================
+
+async function collectePrevisionsICONEU(env) {
+
+  const BASE =
+    "https://api.open-meteo.com/v1/dwd-icon";
+
+  // --------------------------------------------------
+  // 1. COORDONNEES DES 4 POINTS
+  // --------------------------------------------------
+
+  const latitudes =
+    FORECAST_POINTS.map(p => p.latitude).join(",");
+
+  const longitudes =
+    FORECAST_POINTS.map(p => p.longitude).join(",");
+
+  // --------------------------------------------------
+  // 2. REQUETE ICON
+  // --------------------------------------------------
+
+  const params = new URLSearchParams();
+
+  params.set("latitude", latitudes);
+  params.set("longitude", longitudes);
+
+  params.set(
+    "hourly",
+    "precipitation,precipitation_probability"
+  );
+
+  params.set("forecast_hours", "120");
+  params.set("timezone", "UTC");
+  params.set("precipitation_unit", "mm");
+
+  const response = await fetch(
+    BASE + "?" + params.toString()
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `ICON HTTP ${response.status}: ` +
+      await response.text()
+    );
+  }
+
+  const donnees = await response.json();
+
+  const resultats =
+    Array.isArray(donnees) ? donnees : [donnees];
+
+  if (resultats.length !== FORECAST_POINTS.length) {
+    throw new Error(
+      "Nombre de points ICON inattendu"
+    );
+  }
+
+  // --------------------------------------------------
+  // 3. CALCUL DES CUMULS
+  // --------------------------------------------------
+
+  const maintenant = Date.now();
+
+  const horizons = {
+    24: 24 * 60 * 60 * 1000,
+    48: 48 * 60 * 60 * 1000,
+    96: 96 * 60 * 60 * 1000
+  };
+
+  const points = FORECAST_POINTS.map(
+    (point, index) => {
+
+      const horaire = resultats[index].hourly;
+
+      if (
+        !horaire ||
+        !Array.isArray(horaire.time) ||
+        !Array.isArray(horaire.precipitation)
+      ) {
+        throw new Error(
+          `Données horaires ICON absentes : ${point.nom}`
+        );
+      }
+
+      // Première échéance future du modèle
+      const reference =
+        horaire.time.find(
+          t => new Date(t).getTime() >= maintenant
+        );
+
+      if (!reference) {
+        throw new Error(
+          `Aucune échéance future ICON : ${point.nom}`
+        );
+      }
+
+      const debut =
+        new Date(reference).getTime();
+
+      function calculerCumul(heures) {
+
+        const limite =
+          debut + horizons[heures];
+
+        let somme = 0;
+        let nombreValeurs = 0;
+
+        for (
+          let i = 0;
+          i < horaire.time.length;
+          i++
+        ) {
+
+          const t =
+            new Date(horaire.time[i]).getTime();
+
+          if (t > debut && t <= limite) {
+
+            const valeur =
+              horaire.precipitation[i];
+
+            if (
+              valeur !== null &&
+              Number.isFinite(Number(valeur))
+            ) {
+              somme += Number(valeur);
+              nombreValeurs++;
+            }
+
+          }
+
+        }
+
+        return nombreValeurs > 0
+          ? Math.round(somme * 100) / 100
+          : null;
+      }
+
+      // --------------------------------------------------
+      // PROBABILITES HORAIRES SUR 48 H
+      // --------------------------------------------------
+
+      const probabilites = [];
+
+      if (
+        Array.isArray(
+          horaire.precipitation_probability
+        )
+      ) {
+
+        for (
+          let i = 0;
+          i < horaire.time.length;
+          i++
+        ) {
+
+          const t =
+            new Date(horaire.time[i]).getTime();
+
+          if (
+            t > debut &&
+            t <= debut + horizons[48]
+          ) {
+
+            probabilites.push({
+              t: horaire.time[i],
+              probabilite:
+                horaire.precipitation_probability[i]
+            });
+
+          }
+
+        }
+
+      }
+
+      return {
+
+        nom: point.nom,
+        bassin: point.bassin,
+        position: point.position,
+
+        reference: reference,
+
+        pluie_24h_mm: calculerCumul(24),
+        pluie_48h_mm: calculerCumul(48),
+        pluie_96h_mm: calculerCumul(96),
+
+        probabilite_horaire_48h: probabilites
+
+      };
+
+    }
+  );
+
+  // --------------------------------------------------
+  // 4. STOCKAGE
+  // --------------------------------------------------
+
+  const ancien =
+    await env.RADAR.get(
+      "forecast_rain",
+      "json"
+    );
+
+  const previsions = ancien || {};
+
+  previsions.icon = {
+
+    modele: "ICON-EU",
+
+    updated: new Date().toISOString(),
+
+    points
+
+  };
+
+  previsions.updated =
+    new Date().toISOString();
+
+  await env.RADAR.put(
+    "forecast_rain",
+    JSON.stringify(previsions)
+  );
+
+  console.log(
+    "ICON-EU OK",
+    JSON.stringify(points)
+  );
+
+}
+
+
 // ==================================================
 // VIGICRUES
 // ==================================================
