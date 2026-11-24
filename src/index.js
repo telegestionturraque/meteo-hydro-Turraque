@@ -75,7 +75,6 @@ async scheduled(event, env, ctx) {
       })
     );
 
-    return;
   }
 
 
