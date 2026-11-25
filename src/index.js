@@ -2760,8 +2760,43 @@ Données radar indisponibles
 `;
 
  
- // Prévisions chargées mais pas encore affichées
 
+  
+function formaterDateEcheance(date) {
+  const parties = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+    hour: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(date);
+
+  const valeur = type =>
+    parties.find(p => p.type === type).value;
+
+  return `${valeur("day")}/${valeur("month")}/${valeur("year")} ${valeur("hour")}h`;
+}
+  const pointsICONEU =
+  previsions &&
+  previsions.icon &&
+  Array.isArray(previsions.icon.points)
+    ? previsions.icon.points
+    : [const referencePrevisions =
+  pointsICONEU.find(point => point.reference)?.reference;
+
+const datePrevision = heures => {
+  if (!referencePrevisions) return `+${heures} h`;
+
+  return formaterDateEcheance(
+    new Date(
+      new Date(referencePrevisions).getTime()
+      + heures * 60 * 60 * 1000
+    )
+  );
+};];
+  
+   // Prévisions chargées mais pas encore affichées
   // ==================================================
   // TABLEAU DES PRECIPITATIONS PREVUES
   // ==================================================
@@ -2811,9 +2846,9 @@ Précipitations prévues (source : Météo-France / ICON-EU)
 <tr>
 <th rowspan="2">Bassin</th>
 <th rowspan="2">Point</th>
-<th colspan="2">24H / 26/11/26 10h</th>
-<th colspan="2">48H / 27/11/26 10h</th>
-<th colspan="2">96H / 29/11/26 10h</th>
+<th colspan="2">24H / ${datePrevision(24)}</th>
+<th colspan="2">48H / ${datePrevision(48)}</th>
+<th colspan="2">96H / ${datePrevision(96)}</th>
 </tr>
 
 <tr>
