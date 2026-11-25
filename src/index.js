@@ -2818,13 +2818,6 @@ const datePrevision = heures => {
       ? previsions.arpege.points
       : [];
 
-  const pointsICONEU =
-    previsions &&
-    previsions.icon &&
-    Array.isArray(previsions.icon.points)
-      ? previsions.icon.points
-      : [];
-
   const trouverPoint = (liste, nom) =>
     liste.find(point => point.nom === nom);
 
