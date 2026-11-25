@@ -76,7 +76,7 @@ async scheduled(event, env, ctx) {
     );
   }
 
-  // VIGICRUES : toutes les heures, à la minute 2
+  // VIGICRUES : toutes les heures à H:02
   if (event.cron === "2 * * * *") {
     console.log("CRON VIGICRUES");
 
@@ -1669,7 +1669,7 @@ async function getDebit(station) {
 // COLLECTE VIGICRUES 
 // ==================================================
 
-async function collecteEtStockage(env) {
+async function collecteVigicrues(env) {
 
   const trieSurBaise =
   await getDebit(
@@ -1838,35 +1838,30 @@ await env["HYDRO"].put(
   "saint_jean_poutge_history",
   JSON.stringify(historiqueSaintJeanPoutge)
 );
+}
+
+
+// ==================================================
+// COLLECTE PREVISIONS
+// ==================================================
+
+async function collectePrevisions(env) {
+
   // --------------------------------------------------
   // AROME
   // --------------------------------------------------
 
-  console.log(
-    "AVANT AROME"
-  );
+  console.log("AVANT AROME");
 
   try {
+    console.log("AROME START");
 
-    console.log(
-      "AROME START"
-    );
+    await collectePrevisionsAROME(env);
 
-    await collectePrevisionsAROME(
-      env
-    );
-
-    console.log(
-      "AROME FIN"
-    );
+    console.log("AROME FIN");
 
   } catch (error) {
-
-    console.log(
-      "ERREUR AROME",
-      error.message
-    );
-
+    console.log("ERREUR AROME", error.message);
   }
 
 
@@ -1874,41 +1869,27 @@ await env["HYDRO"].put(
   // ARPEGE
   // --------------------------------------------------
 
-  console.log(
-    "AVANT ARPEGE"
-  );
+  console.log("AVANT ARPEGE");
 
   try {
+    console.log("ARPEGE START");
 
-    console.log(
-      "ARPEGE START"
-    );
+    await collectePrevisionsARPEGE(env);
 
-    await collectePrevisionsARPEGE(
-      env
-    );
-
-    console.log(
-      "ARPEGE FIN"
-    );
+    console.log("ARPEGE FIN");
 
   } catch (error) {
-
-    console.log(
-      "ERREUR ARPEGE",
-      error.message
-    );
-
+    console.log("ERREUR ARPEGE", error.message);
   }
 
-  // ==================================================
+
+  // --------------------------------------------------
   // ICON-EU
-  // ==================================================
+  // --------------------------------------------------
 
   console.log("AVANT ICON-EU");
 
   try {
-
     console.log("ICON-EU START");
 
     await collectePrevisionsICONEU(env);
@@ -1916,14 +1897,10 @@ await env["HYDRO"].put(
     console.log("ICON-EU FIN");
 
   } catch (error) {
-
-    console.log(
-      "ERREUR ICON-EU",
-      error.message
-    );
-
+    console.log("ERREUR ICON-EU", error.message);
   }
-}
+
+} 
 // ==================================================
 // AFFICHAGE
 // ==================================================
