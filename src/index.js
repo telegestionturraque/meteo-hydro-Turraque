@@ -2777,12 +2777,16 @@ function formaterDateEcheance(date) {
 
   return `${valeur("day")}/${valeur("month")}/${valeur("year")} ${valeur("hour")}h`;
 }
+
+
   const pointsICONEU =
   previsions &&
   previsions.icon &&
   Array.isArray(previsions.icon.points)
     ? previsions.icon.points
-    : [const referencePrevisions =
+    : [];
+
+const referencePrevisions =
   pointsICONEU.find(point => point.reference)?.reference;
 
 const datePrevision = heures => {
@@ -2794,7 +2798,7 @@ const datePrevision = heures => {
       + heures * 60 * 60 * 1000
     )
   );
-};];
+};
   
    // Prévisions chargées mais pas encore affichées
   // ==================================================
