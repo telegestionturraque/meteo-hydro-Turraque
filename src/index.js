@@ -7,7 +7,6 @@ const RADAR_POINTS = [
   {
     nom: "Lannemezan",
     bassin: "Baïse",
-    position: "Amont",
     latitude: 43.125,
     longitude: 0.384,
     ligne: 2400,
@@ -16,7 +15,6 @@ const RADAR_POINTS = [
   {
     nom: "Trie-sur-Baïse",
     bassin: "Baïse",
-    position: "Amont",
     latitude: 43.3207,
     longitude: 0.3704,
     ligne: 2356,
@@ -25,7 +23,6 @@ const RADAR_POINTS = [
   {
     nom: "Mirande",
     bassin: "Baïse",
-    position: "Médian",
     latitude: 43.5142,
     longitude: 0.4015,
     ligne: 2313,
@@ -34,7 +31,6 @@ const RADAR_POINTS = [
   {
     nom: "Beaucaire",
     bassin: "Baïse",
-    position: "Aval",
     latitude: 43.8378,
     longitude: 0.3851,
     ligne: 2240,
@@ -733,9 +729,6 @@ async function collectePrevisionsAROME(env) {
 
           bassin:
             point.bassin,
-
-          position:
-            point.position,
 
           pluie_mm:
             Number.isFinite(
@@ -2005,9 +1998,6 @@ async function afficherPage(
           bassin:
             point.bassin,
 
-          position:
-            point.position,
-
           ...calculerCumuls(
             historiqueRadar,
             i,
@@ -2732,7 +2722,6 @@ ${new Date(
 
 <tr>
 <th rowspan="2">Bassin</th>
-<th rowspan="2">Position</th>
 <th rowspan="2">Point</th>
 <th>12 h / 25/11 22h</th>
 <th>24 h / 25/11 10h</th>
@@ -2820,7 +2809,6 @@ Données radar indisponibles
 
 <tr>
 <th rowspan="2">Bassin</th>
-<th rowspan="2">Position</th>
 <th rowspan="2">Point</th>
 <th colspan="2">24H / 26/11/26 10h</th>
 <th colspan="2">48H / 27/11/26 10h</th>
@@ -2849,7 +2837,6 @@ ${RADAR_POINTS.map(point => {
   return `
 <tr>
 <td>${point.bassin}</td>
-<td>${point.position}</td>
 <td>${point.nom}</td>
 <td>${formatPluie(icon?.pluie_24h_mm)}</td>
 <td>—</td>
