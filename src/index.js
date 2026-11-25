@@ -2801,7 +2801,9 @@ Données radar indisponibles
       ? `
 
 <div class="radar-table">
-
+<h2>
+Précipitations prévues (source : Météo-France / ICON-EU)
+</h2>
 <table>
 
 <thead>
