@@ -2808,104 +2808,104 @@ Données radar indisponibles
  
  // Prévisions chargées mais pas encore affichées
 
-// ==================================================
-// TABLEAU PLUIE : AROME + ARPEGE + ICON-EU
-// ==================================================
+  // ==================================================
+  // TABLEAU DES PRECIPITATIONS PREVUES
+  // ==================================================
 
-const pointsAROME =
-  previsions &&
-  Array.isArray(previsions.points)
-    ? previsions.points
-    : [];
+  const pointsAROME =
+    previsions &&
+    Array.isArray(previsions.points)
+      ? previsions.points
+      : [];
 
-const pointsARPEGE =
-  previsions &&
-  previsions.arpege &&
-  Array.isArray(previsions.arpege.points)
-    ? previsions.arpege.points
-    : [];
+  const pointsARPEGE =
+    previsions &&
+    previsions.arpege &&
+    Array.isArray(previsions.arpege.points)
+      ? previsions.arpege.points
+      : [];
 
-const pointsICONEU =
-  previsions &&
-  previsions.icon &&
-  Array.isArray(previsions.icon.points)
-    ? previsions.icon.points
-    : [];
+  const pointsICONEU =
+    previsions &&
+    previsions.icon &&
+    Array.isArray(previsions.icon.points)
+      ? previsions.icon.points
+      : [];
 
-const trouverPoint =
-  (liste, nom) =>
+  const trouverPoint = (liste, nom) =>
     liste.find(point => point.nom === nom);
 
-const formatPluie = valeur =>
-  valeur != null && Number.isFinite(Number(valeur))
-    ? Number(valeur).toFixed(1) + " mm"
-    : "—";
+  const formatPluie = valeur =>
+    valeur != null && Number.isFinite(Number(valeur))
+      ? Number(valeur).toFixed(1) + " mm"
+      : "—";
 
-const tableauPrevisions =
-  (pointsAROME.length > 0 ||
-   pointsARPEGE.length > 0 ||
-   pointsICONEU.length > 0)
-    ? `
+  const tableauPrevisions =
+    (pointsAROME.length > 0 ||
+     pointsARPEGE.length > 0 ||
+     pointsICONEU.length > 0)
+      ? `
 
 <div class="radar-table">
 
-<h2>
-Précipitations prévues (source : Météo-France / ICON-EU)
-</h2>
-
 <table>
 
+<thead>
+
 <tr>
-<th>Bassin</th>
-<th>Position</th>
-<th>Point</th>
-<th>ICON-EU 24 h</th>
-<th>AROME 48 h</th>
-<th>ICON-EU 48 h</th>
-<th>ARPEGE 96 h</th>
-<th>ICON-EU 96 h</th>
+<th rowspan="2">Bassin</th>
+<th rowspan="2">Position</th>
+<th rowspan="2">Point</th>
+<th colspan="2">24H / 26/11/26 10h</th>
+<th colspan="2">48H / 27/11/26 10h</th>
+<th colspan="2">96H / 29/11/26 10h</th>
 </tr>
+
+<tr>
+<th>ICON</th>
+<th>AROME</th>
+<th>ICON</th>
+<th>AROME</th>
+<th>ICON</th>
+<th>ARPEGE</th>
+</tr>
+
+</thead>
+
+<tbody>
 
 ${RADAR_POINTS.map(point => {
 
-  const arome =
-    trouverPoint(pointsAROME, point.nom);
-
-  const arpege =
-    trouverPoint(pointsARPEGE, point.nom);
-
-  const icon =
-    trouverPoint(pointsICONEU, point.nom);
+  const arome = trouverPoint(pointsAROME, point.nom);
+  const arpege = trouverPoint(pointsARPEGE, point.nom);
+  const icon = trouverPoint(pointsICONEU, point.nom);
 
   return `
-
 <tr>
 <td>${point.bassin}</td>
 <td>${point.position}</td>
 <td>${point.nom}</td>
-
 <td>${formatPluie(icon?.pluie_24h_mm)}</td>
-<td>${formatPluie(arome?.pluie_mm)}</td>
+<td>—</td>
 <td>${formatPluie(icon?.pluie_48h_mm)}</td>
-<td>${formatPluie(arpege?.pluie_mm)}</td>
+<td>${formatPluie(arome?.pluie_mm)}</td>
 <td>${formatPluie(icon?.pluie_96h_mm)}</td>
+<td>${formatPluie(arpege?.pluie_mm)}</td>
 </tr>
-
 `;
-
 }).join("")}
+
+</tbody>
 
 </table>
 
 </div>
 
 `
-    : `
-
+      : `
 <div class="placeholder">
 Prévisions de précipitations indisponibles
 </div>
-
 `;
 
   // ==================================================
@@ -2976,31 +2976,24 @@ body {
 
 }
 
-
 .dashboard {
-
-  height:
-    100%;
-
-  display:
-    grid;
+  height: 100%;
+  display: grid;
 
   grid-template-columns:
-    1fr 1fr;
+    repeat(4, minmax(0, 1fr));
 
   grid-template-rows:
-   auto auto auto 1fr;
+    auto auto 1fr;
 
   grid-template-areas:
-    "header header"
-    "debit forecast"
-    "sgl radar"
-    "graph radar";
+    "header header header header"
+    "debit graph graph graph"
+    "forecast forecast radar radar";
 
-  gap:
-    10px;
-
+  gap: 10px;
 }
+
 
 
 .header {
@@ -3256,13 +3249,12 @@ td {
   grid-template-rows:
     auto;
 
-  grid-template-areas:
-    "header"
-    "debit"
-    "sgl"
-    "forecast"
-    "radar"
-    "graph";
+grid-template-areas:
+  "header"
+  "debit"
+  "graph"
+  "forecast"
+  "radar";
 
 }
 
