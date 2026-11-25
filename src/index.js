@@ -2749,116 +2749,63 @@ ${new Date(
   })();
 
 
-  // ==================================================
+
+    // ==================================================
   // TABLEAU RADAR
   // ==================================================
 
   const tableauRadar =
-    Array.isArray(radar) &&
-    radar.length > 0
-
+    Array.isArray(radar) && radar.length > 0
       ? `
 
 <div class="radar-table">
 
 <table>
 
-<tr>
-
-<th>
-Bassin
-</th>
-
-<th>
-Position
-</th>
-
-<th>
-Point
-</th>
-
-<th>
-12 h
-</th>
-
-<th>
-24 h
-</th>
-
-<th>
-2 j
-</th>
-
-<th>
-6 j
-</th>
-
-<th>
-15 j
-</th>
-
-</tr>
-
-
-${radar.map(
-  point => `
+<thead>
 
 <tr>
-
-<td>
-${point.bassin}
-</td>
-
-<td>
-${point.position}
-</td>
-
-<td>
-${point.nom}
-</td>
-
-<td>
-${point["12 h"]?.toFixed(1) ?? "—"} mm
-</td>
-
-<td>
-${point["24 h"]?.toFixed(1) ?? "—"} mm
-</td>
-
-<td>
-${point["2 j"]?.toFixed(1) ?? "—"} mm
-</td>
-
-<td>
-${point["6 j"]?.toFixed(1) ?? "—"} mm
-</td>
-
-<td>
-${point["15 j"]?.toFixed(1) ?? "—"} mm
-</td>
-
+<th rowspan="2">Bassin</th>
+<th rowspan="2">Position</th>
+<th rowspan="2">Point</th>
+<th>12 h / 25/11 22h</th>
+<th>24 h / 25/11 10h</th>
+<th>48 h / 27/11 10h</th>
+<th>6 j / 01/12 10h</th>
+<th>15 j / 10/11 10h</th>
 </tr>
 
-`
-).join("")}
+</thead>
+
+<tbody>
+
+${radar.map(point => `
+<tr>
+<td>${point.bassin}</td>
+<td>${point.position}</td>
+<td>${point.nom}</td>
+<td>${point["12 h"]?.toFixed(1) ?? "—"} mm</td>
+<td>${point["24 h"]?.toFixed(1) ?? "—"} mm</td>
+<td>${point["2 j"]?.toFixed(1) ?? "—"} mm</td>
+<td>${point["6 j"]?.toFixed(1) ?? "—"} mm</td>
+<td>${point["15 j"]?.toFixed(1) ?? "—"} mm</td>
+</tr>
+`).join("")}
+
+</tbody>
 
 </table>
 
 </div>
 
 `
-
       : `
-
 <div class="placeholder">
-
 Données radar indisponibles
-
 </div>
-
 `;
 
-
+ 
  // Prévisions chargées mais pas encore affichées
 
 // ==================================================
