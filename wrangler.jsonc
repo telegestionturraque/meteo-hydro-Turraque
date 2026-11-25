@@ -3,11 +3,13 @@
   "main": "src/index.js",
   "compatibility_date": "2026-09-15",
 
-  "triggers": {
-    "crons": [
-    "0 * * * *"
-    ]
-  },
+"triggers": {
+  "crons": [
+    "*/5 * * * *",
+    "0 * * * *",
+    "2 * * * *"
+  ]
+},
 
   "kv_namespaces": [
   {
