@@ -48,58 +48,47 @@ const FORECAST_POINTS =
   );
 
 
-
 // ==================================================
 // WORKER
 // ==================================================
 export default {
-
 async scheduled(event, env, ctx) {
 
-  // --------------------------------------------------
-  // RADAR : toutes les heures
-  // --------------------------------------------------
-
-  if (event.cron === "0 * * * *") {
-
+  // RADAR : toutes les 5 minutes
+  if (event.cron === "*/5 * * * *") {
     console.log("CRON RADAR");
 
     ctx.waitUntil(
       collecteRadar(env).catch(error => {
-
-        console.error(
-          "Erreur Cron Radar :",
-          error.message
-        );
-
+        console.error("Erreur Cron Radar :", error.message);
       })
     );
-
   }
 
-
-  // --------------------------------------------------
-  // COLLECTE GENERALE : toutes les h
-  // --------------------------------------------------
-
+  // PREVISIONS : toutes les heures
   if (event.cron === "0 * * * *") {
-
-    console.log("CRON COLLECTE");
+    console.log("CRON PREVISIONS");
 
     ctx.waitUntil(
-      collecteEtStockage(env).catch(error => {
-
-        console.error(
-          "Erreur Cron :",
-          error.message
-        );
-
+      collectePrevisions(env).catch(error => {
+        console.error("Erreur Cron Prévisions :", error.message);
       })
     );
+  }
 
+  // VIGICRUES : toutes les heures, à la minute 2
+  if (event.cron === "2 * * * *") {
+    console.log("CRON VIGICRUES");
+
+    ctx.waitUntil(
+      collecteVigicrues(env).catch(error => {
+        console.error("Erreur Cron Vigicrues :", error.message);
+      })
+    );
   }
 
 },
+
 
 async fetch(request, env) {
 
