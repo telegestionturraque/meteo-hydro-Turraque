@@ -2737,7 +2737,6 @@ ${new Date(
 ${radar.map(point => `
 <tr>
 <td>${point.bassin}</td>
-<td>${point.position}</td>
 <td>${point.nom}</td>
 <td>${point["12 h"]?.toFixed(1) ?? "—"} mm</td>
 <td>${point["24 h"]?.toFixed(1) ?? "—"} mm</td>
