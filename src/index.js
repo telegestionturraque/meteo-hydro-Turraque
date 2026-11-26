@@ -2173,7 +2173,9 @@ body {
     8px;
 
 }
-
+.forecast-card .separation-echeance {
+  border-left: 2px solid #999;
+}
 </style>
 
 </head>
@@ -2858,13 +2860,12 @@ Précipitations prévues (source : Météo-France / ICON-EU)
 <table>
 
 <thead>
-
 <tr>
 <th rowspan="2">Bassin</th>
 <th rowspan="2">Point</th>
 <th colspan="2">24H / ${datePrevision(24)}</th>
-<th colspan="2">48H / ${datePrevision(48)}</th>
-<th colspan="2">96H / ${datePrevision(96)}</th>
+<th colspan="2" class="separation-echeance">48H / ${datePrevision(48)}</th>
+<th colspan="2" class="separation-echeance">96H / ${datePrevision(96)}</th>
 </tr>
 
 <tr>
@@ -2892,9 +2893,9 @@ ${RADAR_POINTS.map(point => {
 <td>${point.nom}</td>
 <td>${formatPluie(icon?.pluie_24h_mm)}</td>
 <td>—</td>
-<td>${formatPluie(icon?.pluie_48h_mm)}</td>
+<td class="separation-echeance">${formatPluie(icon?.pluie_48h_mm)}</td>
 <td>${formatPluie(arome?.pluie_mm)}</td>
-<td>${formatPluie(icon?.pluie_96h_mm)}</td>
+<td class="separation-echeance">${formatPluie(icon?.pluie_96h_mm)}</td>
 <td>${formatPluie(arpege?.pluie_mm)}</td>
 </tr>
 `;
