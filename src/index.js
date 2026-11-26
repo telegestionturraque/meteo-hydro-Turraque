@@ -2743,9 +2743,9 @@ const dateRadarJours = jours => {
 <th rowspan="2">Bassin</th>
 <th rowspan="2">Point</th>
 <th>12 h / ${dateRadar(12)}</th>
-<th>24 h / ${dateRadar(24)}</th>
-<th>48 h / ${dateRadar(48)}</th>
-<th>6 j / ${dateRadarJours(6)}</th>
+<th style="border-left: 1px solid #ccc;">24 h / ${dateRadar(24)}</th>
+<th style="border-left: 1px solid #ccc;">48 h / ${dateRadar(48)}</th>
+<th style="border-left: 1px solid #ccc;">6 j / ${dateRadarJours(6)}</th>
 <th>15 j / ${dateRadarJours(15)}</th>
 </tr>
 
@@ -2758,9 +2758,9 @@ ${radar.map(point => `
 <td>${point.bassin}</td>
 <td>${point.nom}</td>
 <td>${point["12 h"]?.toFixed(1) ?? "—"} mm</td>
-<td>${point["24 h"]?.toFixed(1) ?? "—"} mm</td>
-<td>${point["2 j"]?.toFixed(1) ?? "—"} mm</td>
-<td>${point["6 j"]?.toFixed(1) ?? "—"} mm</td>
+<td style="border-left: 1px solid #ccc;">${point["24 h"]?.toFixed(1) ?? "—"} mm</td>
+<td style="border-left: 1px solid #ccc;">${point["2 j"]?.toFixed(1) ?? "—"} mm</td>
+<td style="border-left: 1px solid #ccc;">${point["6 j"]?.toFixed(1) ?? "—"} mm</td>
 <td>${point["15 j"]?.toFixed(1) ?? "—"} mm</td>
 </tr>
 `).join("")}
