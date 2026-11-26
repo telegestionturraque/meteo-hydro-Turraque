@@ -2742,7 +2742,7 @@ const dateRadarJours = jours => {
 <tr>
 <th rowspan="2">Bassin</th>
 <th rowspan="2">Point</th>
-<th>12 h / ${dateRadar(12)}</th>
+<th style="border-left: 1px solid #ccc;">12 h / ${dateRadar(12)}</th>
 <th style="border-left: 1px solid #ccc;">24 h / ${dateRadar(24)}</th>
 <th style="border-left: 1px solid #ccc;">48 h / ${dateRadar(48)}</th>
 <th style="border-left: 1px solid #ccc;">6 j / ${dateRadarJours(6)}</th>
@@ -2757,7 +2757,7 @@ ${radar.map(point => `
 <tr>
 <td>${point.bassin}</td>
 <td>${point.nom}</td>
-<td>${point["12 h"]?.toFixed(1) ?? "—"} mm</td>
+<td style="border-left: 1px solid #ccc;">${point["12 h"]?.toFixed(1) ?? "—"} mm</td>
 <td style="border-left: 1px solid #ccc;">${point["24 h"]?.toFixed(1) ?? "—"} mm</td>
 <td style="border-left: 1px solid #ccc;">${point["2 j"]?.toFixed(1) ?? "—"} mm</td>
 <td style="border-left: 1px solid #ccc;">${point["6 j"]?.toFixed(1) ?? "—"} mm</td>
@@ -2860,13 +2860,13 @@ Précipitations prévues (source : Météo-France / ICON-EU)
 <tr>
 <th rowspan="2">Bassin</th>
 <th rowspan="2">Point</th>
-<th colspan="2">24H / ${datePrevision(24)}</th>
+<th colspan="2" style="border-left: 1px solid #ccc;">24H / ${datePrevision(24)}</th>
 <th colspan="2" style="border-left: 1px solid #ccc;">48H / ${datePrevision(48)}</th>
 <th colspan="2" style="border-left: 1px solid #ccc;">96H / ${datePrevision(96)}</th>
 </tr>
 
 <tr>
-<th>ICON</th>
+<th style="border-left: 1px solid #ccc;">ICON</th>
 <th>AROME</th>
 <th style="border-left: 1px solid #ccc;">ICON</th>
 <th>AROME</th>
@@ -2888,7 +2888,7 @@ ${RADAR_POINTS.map(point => {
 <tr>
 <td>${point.bassin}</td>
 <td>${point.nom}</td>
-<td>${formatPluie(icon?.pluie_24h_mm)}</td>
+<td style="border-left: 1px solid #ccc;">${formatPluie(icon?.pluie_24h_mm)}</td>
 <td>—</td>
 <td style="border-left: 1px solid #ccc;">${formatPluie(icon?.pluie_48h_mm)}</td>
 <td>${formatPluie(arome?.pluie_mm)}</td>
