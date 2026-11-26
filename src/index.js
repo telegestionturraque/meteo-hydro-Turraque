@@ -2709,7 +2709,25 @@ ${new Date(
     // ==================================================
   // TABLEAU RADAR
   // ==================================================
+const referenceRadar = new Date(derniere.t);
 
+const dateRadar = heures => {
+  return formaterDateEcheance(
+    new Date(
+      referenceRadar.getTime()
+      - heures * 60 * 60 * 1000
+    )
+  );
+};
+
+const dateRadarJours = jours => {
+  return formaterDateEcheance(
+    new Date(
+      referenceRadar.getTime()
+      - jours * 24 * 60 * 60 * 1000
+    )
+  );
+};
   const tableauRadar =
     Array.isArray(radar) && radar.length > 0
       ? `
@@ -2723,11 +2741,11 @@ ${new Date(
 <tr>
 <th rowspan="2">Bassin</th>
 <th rowspan="2">Point</th>
-<th>12 h / 25/11 22h</th>
-<th>24 h / 25/11 10h</th>
-<th>48 h / 27/11 10h</th>
-<th>6 j / 01/12 10h</th>
-<th>15 j / 10/11 10h</th>
+<th>12 h / ${dateRadar(12)}</th>
+<th>24 h / ${dateRadar(24)}</th>
+<th>48 h / ${dateRadar(48)}</th>
+<th>6 j / ${dateRadarJours(6)}</th>
+<th>15 j / ${dateRadarJours(15)}</th>
 </tr>
 
 </thead>
