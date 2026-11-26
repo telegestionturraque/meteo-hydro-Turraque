@@ -2746,7 +2746,7 @@ const dateRadarJours = jours => {
 <th style="border-left: 1px solid #ccc;">24 h / ${dateRadar(24)}</th>
 <th style="border-left: 1px solid #ccc;">48 h / ${dateRadar(48)}</th>
 <th style="border-left: 1px solid #ccc;">6 j / ${dateRadarJours(6)}</th>
-<th>15 j / ${dateRadarJours(15)}</th>
+<th style="border-left: 1px solid #ccc;">15 j / ${dateRadarJours(15)}</th>
 </tr>
 
 </thead>
@@ -2761,7 +2761,7 @@ ${radar.map(point => `
 <td style="border-left: 1px solid #ccc;">${point["24 h"]?.toFixed(1) ?? "—"} mm</td>
 <td style="border-left: 1px solid #ccc;">${point["2 j"]?.toFixed(1) ?? "—"} mm</td>
 <td style="border-left: 1px solid #ccc;">${point["6 j"]?.toFixed(1) ?? "—"} mm</td>
-<td>${point["15 j"]?.toFixed(1) ?? "—"} mm</td>
+<td style="border-left: 1px solid #ccc;">${point["15 j"]?.toFixed(1) ?? "—"} mm</td>
 </tr>
 `).join("")}
 
