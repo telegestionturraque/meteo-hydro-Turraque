@@ -2172,11 +2172,7 @@ body {
   border-radius:
     8px;
 
-}
-.forecast-card td.separation-echeance,
-.forecast-card th.separation-echeance {
-  box-shadow: inset 2px 0 0 #555;
-}
+
 </style>
 
 </head>
@@ -2894,9 +2890,9 @@ ${RADAR_POINTS.map(point => {
 <td>${point.nom}</td>
 <td>${formatPluie(icon?.pluie_24h_mm)}</td>
 <td>—</td>
-<td class="separation-echeance">${formatPluie(icon?.pluie_48h_mm)}</td>
+<td style="border-left: 1px solid #ccc;">${formatPluie(icon?.pluie_48h_mm)}</td>
 <td>${formatPluie(arome?.pluie_mm)}</td>
-<td class="separation-echeance">${formatPluie(icon?.pluie_96h_mm)}</td>
+<td style="border-left: 1px solid #ccc;">${formatPluie(icon?.pluie_96h_mm)}</td>
 <td>${formatPluie(arpege?.pluie_mm)}</td>
 </tr>
 `;
