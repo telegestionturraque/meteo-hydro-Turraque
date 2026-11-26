@@ -2706,22 +2706,28 @@ const dateReferenceRadar =
     : null;
 
 const dateRadar = heures => {
+  if (!dateReferenceRadar) return "—";
+
   return formaterDateEcheance(
     new Date(
-      referenceRadar.getTime()
+      dateReferenceRadar.getTime()
       - heures * 60 * 60 * 1000
     )
   );
 };
 
 const dateRadarJours = jours => {
+  if (!dateReferenceRadar) return "—";
+
   return formaterDateEcheance(
     new Date(
-      referenceRadar.getTime()
+      dateReferenceRadar.getTime()
       - jours * 24 * 60 * 60 * 1000
     )
   );
 };
+
+  
   const tableauRadar =
     Array.isArray(radar) && radar.length > 0
       ? `
