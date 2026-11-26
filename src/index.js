@@ -2174,7 +2174,7 @@ body {
 
 }
 .forecast-card .separation-echeance {
-  border-left: 2px solid #999;
+  border-left: 2px solid #555 !important;
 }
 </style>
 
