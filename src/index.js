@@ -2794,7 +2794,7 @@ function formaterDateEcheance(date) {
   const valeur = type =>
     parties.find(p => p.type === type).value;
 
-  return `${valeur("day")}/${valeur("month")}/${valeur("year")} ${valeur("hour")}h`;
+  return `${valeur("day")}/${valeur("month")} ${valeur("hour")}h`;
 }
 
 
