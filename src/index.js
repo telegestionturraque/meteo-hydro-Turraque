@@ -2776,9 +2776,9 @@ ${RADAR_POINTS.map(point => {
 <td>${point.bassin}</td>
 <td>${point.nom}</td>
 <td style="border-left: 1px solid #ccc;">${formatPluie(icon?.pluie_24h_mm)}</td>
-<td>—</td>
+<td>${formatPluie(arome?.pluie_24h_mm)}</td>
 <td style="border-left: 1px solid #ccc;">${formatPluie(icon?.pluie_48h_mm)}</td>
-<td>${formatPluie(arome?.pluie_mm)}</td>
+<td>${formatPluie(arome?.pluie_48h_mm)}</td>
 <td style="border-left: 1px solid #ccc;">${formatPluie(icon?.pluie_96h_mm)}</td>
 <td>${formatPluie(arpege?.pluie_mm)}</td>
 </tr>
