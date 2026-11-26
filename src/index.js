@@ -1955,60 +1955,51 @@ async function afficherPage(
     );
 
 
-  // --------------------------------------------------
-  // RADAR
-  // --------------------------------------------------
 
-  const historiqueRadar =
-    await env.RADAR.get(
-      "radar_history",
-      "json"
+// --------------------------------------------------
+// RADAR
+// --------------------------------------------------
+
+const historiqueRadar =
+  await env.RADAR.get(
+    "radar_history",
+    "json"
+  );
+
+let radar = [];
+let referenceRadar = null;
+
+if (
+  Array.isArray(historiqueRadar) &&
+  historiqueRadar.length > 0
+) {
+
+  const derniere =
+    historiqueRadar[
+      historiqueRadar.length - 1
+    ];
+
+  referenceRadar =
+    new Date(derniere.t).getTime();
+
+  radar =
+    RADAR_POINTS.map(
+      (point, i) => ({
+
+        nom: point.nom,
+        bassin: point.bassin,
+
+        ...calculerCumuls(
+          historiqueRadar,
+          i,
+          referenceRadar
+        )
+
+      })
     );
 
-
-  let radar = [];
-
-
-  if (
-    Array.isArray(
-      historiqueRadar
-    ) &&
-    historiqueRadar.length > 0
-  ) {
-
-    const derniere =
-      historiqueRadar[
-        historiqueRadar.length - 1
-      ];
-
-
-    const maintenant =
-      new Date(
-        derniere.t
-      ).getTime();
-
-
-    radar =
-      RADAR_POINTS.map(
-        (point, i) => ({
-
-          nom:
-            point.nom,
-
-          bassin:
-            point.bassin,
-
-          ...calculerCumuls(
-            historiqueRadar,
-            i,
-            maintenant
-          )
-
-        })
-      );
-
-  }
-
+}
+ 
 // --------------------------------------------------
 // HISTORIQUE DEBIT TRIE-SUR-BAISE
 // --------------------------------------------------
