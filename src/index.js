@@ -2872,9 +2872,9 @@ Précipitations prévues (source : Météo-France / ICON-EU)
 <tr>
 <th>ICON</th>
 <th>AROME</th>
-<th>ICON</th>
+<th class="separation-echeance">ICON</th>
 <th>AROME</th>
-<th>ICON</th>
+<th class="separation-echeance">ICON</th>
 <th>ARPEGE</th>
 </tr>
 
