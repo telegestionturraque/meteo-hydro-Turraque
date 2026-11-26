@@ -2865,16 +2865,16 @@ Précipitations prévues (source : Météo-France / ICON-EU)
 <th rowspan="2">Bassin</th>
 <th rowspan="2">Point</th>
 <th colspan="2">24H / ${datePrevision(24)}</th>
-<th colspan="2" class="separation-echeance">48H / ${datePrevision(48)}</th>
-<th colspan="2" class="separation-echeance">96H / ${datePrevision(96)}</th>
+<th colspan="2" style="border-left: 1px solid #ccc;">48H / ${datePrevision(48)}</th>
+<th colspan="2" style="border-left: 1px solid #ccc;">96H / ${datePrevision(96)}</th>
 </tr>
 
 <tr>
 <th>ICON</th>
 <th>AROME</th>
-<th class="separation-echeance">ICON</th>
+<th style="border-left: 1px solid #ccc;">ICON</th>
 <th>AROME</th>
-<th class="separation-echeance">ICON</th>
+<th style="border-left: 1px solid #ccc;">ICON</th>
 <th>ARPEGE</th>
 </tr>
 
