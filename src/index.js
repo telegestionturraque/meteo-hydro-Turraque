@@ -2700,7 +2700,10 @@ ${new Date(
     // ==================================================
   // TABLEAU RADAR
   // ==================================================
-const referenceRadar = new Date(derniere.t);
+const dateReferenceRadar =
+  referenceRadar !== null
+    ? new Date(referenceRadar)
+    : null;
 
 const dateRadar = heures => {
   return formaterDateEcheance(
