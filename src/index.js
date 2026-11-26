@@ -442,343 +442,230 @@ async function collectePrevisionsAROME(env) {
     "https://public-api.meteofrance.fr/public/arome/1.0/wcs/" +
     "MF-NWP-HIGHRES-AROME-001-FRANCE-WCS";
 
-
   // --------------------------------------------------
   // 1. CATALOGUE
   // --------------------------------------------------
 
-  const capResponse =
-    await fetch(
-      BASE +
-      "/GetCapabilities" +
-      "?service=WCS&version=2.0.1&language=fre",
-      {
-        headers: {
-          apikey:
-            env.METEOFRANCE_AROME_API_KEY
-        }
+  const capResponse = await fetch(
+    BASE +
+    "/GetCapabilities" +
+    "?service=WCS&version=2.0.1&language=fre",
+    {
+      headers: {
+        apikey: env.METEOFRANCE_AROME_API_KEY
       }
-    );
-
-  console.log(
-    "AROME GetCapabilities",
-    capResponse.status
+    }
   );
 
-  const catalogue =
-    await capResponse.text();
+  const catalogue = await capResponse.text();
 
   if (!capResponse.ok) {
-
     throw new Error(
       `AROME GetCapabilities ${capResponse.status}: ${catalogue}`
     );
-
   }
 
-
   // --------------------------------------------------
-  // 2. COVERAGES P2D
+  // 2. COVERAGES P1D ET P2D
   // --------------------------------------------------
 
   const regex =
-    /<wcs:CoverageId>(TOTAL_WATER_PRECIPITATION__GROUND_OR_WATER_SURFACE___(\d{4}-\d{2}-\d{2}T\d{2}\.\d{2}\.\d{2}Z)_P2D)<\/wcs:CoverageId>/g;
+    /<wcs:CoverageId>(TOTAL_WATER_PRECIPITATION__GROUND_OR_WATER_SURFACE___(\d{4}-\d{2}-\d{2}T\d{2}\.\d{2}\.\d{2}Z)_(P1D|P2D))<\/wcs:CoverageId>/g;
 
-  const couvertures = [];
+  const couvertures = {};
 
-  for (
-    const match
-    of catalogue.matchAll(regex)
-  ) {
+  for (const match of catalogue.matchAll(regex)) {
 
-    couvertures.push({
-      coverageId:
-        match[1],
+    const run = match[2];
+    const periode = match[3];
 
-      run:
-        match[2]
-    });
+    if (!couvertures[run]) {
+      couvertures[run] = {};
+    }
 
+    couvertures[run][periode] = match[1];
   }
 
-  if (!couvertures.length) {
+  // Dernier run disposant des deux périodes
+  const runs = Object.keys(couvertures)
+    .filter(run =>
+      couvertures[run].P1D &&
+      couvertures[run].P2D
+    )
+    .sort();
 
+  if (!runs.length) {
     throw new Error(
-      "Aucun coverage AROME P2D disponible"
+      "AROME : aucun run avec P1D et P2D disponibles"
     );
-
   }
 
-  couvertures.sort(
-    (a, b) =>
-      a.run.localeCompare(b.run)
-  );
-
-  const dernier =
-    couvertures[
-      couvertures.length - 1
-    ];
-
+  const dernierRun = runs[runs.length - 1];
 
   // --------------------------------------------------
   // 3. RUN -> ISO
   // --------------------------------------------------
 
-  const runIso =
-    dernier.run.replace(
-      /^(\d{4}-\d{2}-\d{2}T\d{2})\.(\d{2})\.(\d{2})Z$/,
-      "$1:$2:$3Z"
+  const runIso = dernierRun.replace(
+    /^(\d{4}-\d{2}-\d{2}T\d{2})\.(\d{2})\.(\d{2})Z$/,
+    "$1:$2:$3Z"
+  );
+
+  // --------------------------------------------------
+  // 4. EMPRISE DES POINTS
+  // --------------------------------------------------
+
+  const latMin = Math.floor(
+    Math.min(...FORECAST_POINTS.map(p => p.latitude)) * 100
+  ) / 100;
+
+  const latMax = Math.ceil(
+    Math.max(...FORECAST_POINTS.map(p => p.latitude)) * 100
+  ) / 100;
+
+  const lonMin = Math.floor(
+    Math.min(...FORECAST_POINTS.map(p => p.longitude)) * 100
+  ) / 100;
+
+  const lonMax = Math.ceil(
+    Math.max(...FORECAST_POINTS.map(p => p.longitude)) * 100
+  ) / 100;
+
+  // --------------------------------------------------
+  // 5. RECUPERATION D'UN CUMUL
+  // --------------------------------------------------
+
+  async function recupererCumul(periode, heures) {
+
+    const echeance = new Date(
+      new Date(runIso).getTime() +
+      heures * 60 * 60 * 1000
+    ).toISOString().replace(".000Z", "Z");
+
+    const params = new URLSearchParams();
+
+    params.set("service", "WCS");
+    params.set("version", "2.0.1");
+
+    params.set(
+      "coverageid",
+      couvertures[dernierRun][periode]
     );
 
+    params.append("subset", `time(${echeance})`);
+    params.append("subset", `lat(${latMin},${latMax})`);
+    params.append("subset", `long(${lonMin},${lonMax})`);
 
-  // --------------------------------------------------
-  // 4. ECHEANCE +48 H
-  // --------------------------------------------------
+    params.set("format", "image/tiff");
 
-  const echeance =
-    new Date(
-      new Date(runIso).getTime() +
-      48 * 60 * 60 * 1000
-    )
-      .toISOString()
-      .replace(
-        ".000Z",
-        "Z"
-      );
-
-
-  // --------------------------------------------------
-  // 5. EMPRISE DES 9 POINTS
-  // --------------------------------------------------
-
-  const latMin =
-    Math.floor(
-      Math.min(
-        ...FORECAST_POINTS.map(
-          p => p.latitude
-        )
-      ) * 100
-    ) / 100;
-
-  const latMax =
-    Math.ceil(
-      Math.max(
-        ...FORECAST_POINTS.map(
-          p => p.latitude
-        )
-      ) * 100
-    ) / 100;
-
-  const lonMin =
-    Math.floor(
-      Math.min(
-        ...FORECAST_POINTS.map(
-          p => p.longitude
-        )
-      ) * 100
-    ) / 100;
-
-  const lonMax =
-    Math.ceil(
-      Math.max(
-        ...FORECAST_POINTS.map(
-          p => p.longitude
-        )
-      ) * 100
-    ) / 100;
-
-
-  // --------------------------------------------------
-  // 6. GETCOVERAGE
-  // --------------------------------------------------
-
-  const params =
-    new URLSearchParams();
-
-  params.set(
-    "service",
-    "WCS"
-  );
-
-  params.set(
-    "version",
-    "2.0.1"
-  );
-
-  params.set(
-    "coverageid",
-    dernier.coverageId
-  );
-
-  params.append(
-    "subset",
-    `time(${echeance})`
-  );
-
-  params.append(
-    "subset",
-    `lat(${latMin},${latMax})`
-  );
-
-  params.append(
-    "subset",
-    `long(${lonMin},${lonMax})`
-  );
-
-  params.set(
-    "format",
-    "image/tiff"
-  );
-
-
-  const coverageResponse =
-    await fetch(
-      BASE +
-      "/GetCoverage?" +
-      params.toString(),
+    const response = await fetch(
+      BASE + "/GetCoverage?" + params.toString(),
       {
         headers: {
-          apikey:
-            env.METEOFRANCE_AROME_API_KEY
+          apikey: env.METEOFRANCE_AROME_API_KEY
         }
       }
     );
 
+    const buffer = await response.arrayBuffer();
 
-  const buffer =
-    await coverageResponse.arrayBuffer();
+    if (!response.ok) {
+      throw new Error(
+        `AROME ${periode} GetCoverage ${response.status}: ` +
+        new TextDecoder().decode(buffer)
+      );
+    }
 
+    const tiff = await GeoTIFF.fromArrayBuffer(buffer);
+    const image = await tiff.getImage();
 
-  if (!coverageResponse.ok) {
+    const width = image.getWidth();
+    const origin = image.getOrigin();
+    const resolution = image.getResolution();
 
-    throw new Error(
-      `AROME GetCoverage ${coverageResponse.status}: ` +
-      new TextDecoder().decode(
-        buffer
-      )
-    );
-
-  }
-
-
-  // --------------------------------------------------
-  // 7. LECTURE GEOTIFF
-  // --------------------------------------------------
-
-  const tiff =
-    await GeoTIFF.fromArrayBuffer(
-      buffer
-    );
-
-  const image =
-    await tiff.getImage();
-
-  const width =
-    image.getWidth();
-
-  const origin =
-    image.getOrigin();
-
-  const resolution =
-    image.getResolution();
-  const raster =
-    await image.readRasters({
+    const raster = await image.readRasters({
       interleave: true
     });
 
+    const valeurs = FORECAST_POINTS.map(point => {
+
+      const colonne = Math.floor(
+        (point.longitude - origin[0]) / resolution[0]
+      );
+
+      const ligne = Math.floor(
+        (point.latitude - origin[1]) / resolution[1]
+      );
+
+      const index = ligne * width + colonne;
+
+      const valeur = Number(raster[index]);
+
+      return Number.isFinite(valeur)
+        ? Math.round(valeur * 10) / 10
+        : null;
+    });
+
+    return {
+      echeance,
+      valeurs
+    };
+  }
 
   // --------------------------------------------------
-  // 8. EXTRACTION
+  // 6. COLLECTE 24 H ET 48 H
   // --------------------------------------------------
 
-  const points =
-    FORECAST_POINTS.map(
-      point => {
+  const cumul24 = await recupererCumul("P1D", 24);
+  const cumul48 = await recupererCumul("P2D", 48);
 
-        const colonne =
-          Math.floor(
-            (
-              point.longitude -
-              origin[0]
-            ) /
-            resolution[0]
-          );
+  // --------------------------------------------------
+  // 7. ASSEMBLAGE DES POINTS
+  // --------------------------------------------------
 
-        const ligne =
-          Math.floor(
-            (
-              point.latitude -
-              origin[1]
-            ) /
-            resolution[1]
-          );
+  const points = FORECAST_POINTS.map((point, i) => ({
+    nom: point.nom,
+    bassin: point.bassin,
 
-        const index =
-          ligne * width +
-          colonne;
+    pluie_24h_mm: cumul24.valeurs[i],
+    pluie_48h_mm: cumul48.valeurs[i],
 
-        const valeur =
-          Number(
-            raster[index]
-          );
-
-        return {
-
-          nom:
-            point.nom,
-
-          bassin:
-            point.bassin,
-
-          pluie_mm:
-            Number.isFinite(
-              valeur
-            )
-              ? Math.round(
-                  valeur * 10
-                ) / 10
-              : null
-
-        };
-
-      }
-    );
-
+    // Conservation de l'ancien champ 48 h
+    pluie_mm: cumul48.valeurs[i]
+  }));
 
   console.log(
     "AROME OK",
-    dernier.run,
-    echeance,
+    dernierRun,
     points
   );
 
+  // --------------------------------------------------
+  // 8. STOCKAGE
+  // --------------------------------------------------
 
-  // --------------------------------------------------
-  // 9. STOCKAGE
-  // --------------------------------------------------
+  const ancien = await env.RADAR.get(
+    "forecast_rain",
+    "json"
+  );
+
+  const previsions = ancien || {};
+
+  previsions.modele = "AROME";
+  previsions.run = dernierRun;
+  previsions.echeance_24h = cumul24.echeance;
+  previsions.echeance_48h = cumul48.echeance;
+  previsions.points = points;
+
+  previsions.updated = new Date().toISOString();
 
   await env.RADAR.put(
     "forecast_rain",
-    JSON.stringify({
-
-      updated:
-        new Date().toISOString(),
-
-      modele:
-        "AROME",
-
-      run:
-        dernier.run,
-
-      echeance_48h:
-        echeance,
-
-      points
-
-    })
+    JSON.stringify(previsions)
   );
-
 }
+
+
 // ==================================================
 // ARPEGE
 // ==================================================
