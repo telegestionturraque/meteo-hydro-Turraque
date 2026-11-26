@@ -2100,14 +2100,15 @@ trieSurBaiseGraph =
     );
 
 
-  return pageAvecMesure(
-    mesure,
-    radar,
-     trieSurBaiseGraph,
-    saintJeanPoutgeGraph,
-    previsions,
-    periode
-  );
+return pageAvecMesure(
+  mesure,
+  radar,
+  referenceRadar,
+  trieSurBaiseGraph,
+  saintJeanPoutgeGraph,
+  previsions,
+  periode
+);
 
 }
 // ==================================================
@@ -2207,6 +2208,7 @@ Aucune mesure enregistrée.
 function pageAvecMesure(
   mesure,
   radar,
+  referenceRadar,
   trieSurBaiseGraph,
   saintJeanPoutgeGraph,
   previsions,
